@@ -1,0 +1,159 @@
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : pc4
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Mixed
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+
+Ethernet adapter Ethernet:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Realtek PCIe FE Family Controller
+   Physical Address. . . . . . . . . : 8C-EC-4B-FE-06-06
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Wireless LAN adapter Local Area Connection* 3:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft Wi-Fi Direct Virtual Adapter
+   Physical Address. . . . . . . . . : 2E-6F-C9-50-E4-B9
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Wireless LAN adapter Local Area Connection* 12:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft Wi-Fi Direct Virtual Adapter #2
+   Physical Address. . . . . . . . . : 3E-6F-C9-50-E4-B9
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::a190:4cb:b8e5:30ad%7(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 192.168.10.24(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : 192.168.10.1
+   DHCPv6 IAID . . . . . . . . . . . : 608071625
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-22-EA-06-0F-8C-EC-4B-FE-06-06
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter VMware Network Adapter VMnet1:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : VMware Virtual Ethernet Adapter for VMnet1
+   Physical Address. . . . . . . . . : 00-50-56-C0-00-01
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::50d7:8a69:8e0e:108%12(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 192.168.142.1(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : Tuesday, January 19, 2021 2:15:29 PM
+   Lease Expires . . . . . . . . . . : Tuesday, January 19, 2021 2:45:29 PM
+   Default Gateway . . . . . . . . . : 
+   DHCP Server . . . . . . . . . . . : 192.168.142.254
+   DHCPv6 IAID . . . . . . . . . . . : 855658582
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-22-EA-06-0F-8C-EC-4B-FE-06-06
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter VMware Network Adapter VMnet8:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : VMware Virtual Ethernet Adapter for VMnet8
+   Physical Address. . . . . . . . . : 00-50-56-C0-00-08
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::50f6:e84a:4bc2:3ce2%9(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 192.168.3.1(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Lease Obtained. . . . . . . . . . : Tuesday, January 19, 2021 2:15:28 PM
+   Lease Expires . . . . . . . . . . : Tuesday, January 19, 2021 2:45:29 PM
+   Default Gateway . . . . . . . . . : 
+   DHCP Server . . . . . . . . . . . : 192.168.3.254
+   DHCPv6 IAID . . . . . . . . . . . : 905990230
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-22-EA-06-0F-8C-EC-4B-FE-06-06
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   Primary WINS Server . . . . . . . : 192.168.3.2
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Wireless LAN adapter Wi-Fi:
+
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Dell Wireless 1810 802.11ac
+   Physical Address. . . . . . . . . : 2C-6F-C9-50-E4-B9
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::a8b2:ab5c:9987:fa2c%19(Preferred) 
+   Autoconfiguration IPv4 Address. . : 169.254.250.44(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.0.0
+   Default Gateway . . . . . . . . . : 
+   DHCPv6 IAID . . . . . . . . . . . : 120352713
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-22-EA-06-0F-8C-EC-4B-FE-06-06
+   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+                                       fec0:0:0:ffff::2%1
+                                       fec0:0:0:ffff::3%1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+
+Ethernet adapter Bluetooth Network Connection:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Bluetooth Device (Personal Area Network)
+   Physical Address. . . . . . . . . : 2C-6F-C9-50-E4-BA
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter isatap.{6B299926-F845-4D95-8EE5-810B0FE6EE8B}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter Local Area Connection* 13:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft Teredo Tunneling Adapter
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter isatap.{32A3C411-6DEF-4050-ACD6-74975C343B3F}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #2
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter isatap.{3C8D8EC6-315E-41B8-A2C1-23554A8659B9}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #4
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes
+
+Tunnel adapter isatap.{DB0C71D2-557C-450C-8752-C89B7278B913}:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . : 
+   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #5
+   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+   DHCP Enabled. . . . . . . . . . . : No
+   Autoconfiguration Enabled . . . . : Yes

@@ -1,0 +1,31 @@
+[Desktop Entry]
+Type=Application
+Exec=scrcpy -w %u
+Icon=smartphoneconnected
+StartupNotify=true
+Terminal=false
+Categories=Utility;
+Name=Screen Mirror (scrcpy)
+Comment=View Android Screen On Linux
+Hidden=false
+Actions=borderless;nodisplay;nodisplayborderless;view;viewborderless;
+
+[Desktop Action borderless]
+Name=With borderless window
+Exec=scrcpy --window-borderless -w %u
+
+[Desktop Action nodisplay]
+Name=With turned off android's display
+Exec=scrcpy -S -w %u
+
+[Desktop Action nodisplayborderless]
+Name=With turned off android's display and borderless wondow
+Exec=scrcpy -S --window-borderless -w %u
+
+[Desktop Action view]
+Name=With view only mode
+Exec=scrcpy -n %u
+
+[Desktop Action viewborderless]
+Name=With view only mode and borderless wondow
+Exec=scrcpy -n --window-borderless %u

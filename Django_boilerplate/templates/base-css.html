@@ -1,0 +1,80 @@
+<style type="text/css">
+    html{scroll-behavior: smooth!important;}
+    .alert {
+        position: relative;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem
+    }
+    .alert-dismissible {
+        padding-right: 4rem
+    }
+    .alert-dismissible .close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: .75rem 1.25rem;
+        color: inherit
+    }
+    .alert-dark {
+        color: #1b1e21;
+        background-color: #d6d8d9;
+        border-color: #c6c8ca
+    }
+    .alert-info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+        border-color: #bee5eb
+    }
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb
+    }
+    .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba
+    }
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb
+    }
+    .fade {
+        transition: opacity .15s linear
+    }
+    @media (prefers-reduced-motion:reduce) {
+        .fade {
+            transition: none
+        }
+    }
+    .fade:not(.show) {
+        opacity: 0
+    }
+    .close {
+        float: right;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: .5
+    }
+    .close:hover {
+        color: #000;
+        text-decoration: none
+    }
+    .close:not(:disabled):not(.disabled):focus,.close:not(:disabled):not(.disabled):hover {
+        opacity: .75
+    }
+    button.close {
+        padding: 0;
+        background-color: transparent;
+        border: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none
+    }
+</style>

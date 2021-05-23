@@ -1,0 +1,6 @@
+cd /opt/lampp/
+sudo addgroup lamppusers
+sudo adduser $USER lamppusers
+sudo adduser daemon lamppusers
+sudo chown $USER:daemon -R htdocs
+sudo chmod u=rwX,g=rwX,o=rX -R htdocs
