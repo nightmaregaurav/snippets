@@ -4,7 +4,7 @@ import sys
 from django.contrib import messages
 
 # noinspection PyRedeclaration
-DEBUG = os.getenv('DJANGO_DEBUG') != "True"
+DEBUG = os.getenv('DJANGO_DEBUG') == "True"
 
 if not DEBUG:
     # add secret key to env variable first
