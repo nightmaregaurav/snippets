@@ -1,6 +1,15 @@
+# Debian
 cd /opt/lampp/
 sudo addgroup lamppusers
 sudo adduser $USER lamppusers
 sudo adduser daemon lamppusers
+sudo chown $USER:daemon -R htdocs
+sudo chmod u=rwX,g=rwX,o=rX -R htdocs
+
+# Arch
+cd /opt/lampp/
+sudo groupadd lamppusers
+sudo usermod -aG lamppusers $USER
+sudo usermod -aG lamppusers daemon
 sudo chown $USER:daemon -R htdocs
 sudo chmod u=rwX,g=rwX,o=rX -R htdocs
