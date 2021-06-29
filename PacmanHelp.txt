@@ -1,0 +1,40 @@
+installing package  => pacman -S package1_name package2_name
+
+
+uninstalling package => pacman -R package1_name package2_name
+
+
+uninstalling package along with dependencies that are no longer needed => pacman -Rs package_name
+
+
+uninstall dependencies that are no longer needed by any packages => pacman -Qdtq | pacman -Rs -
+
+
+upgrading packages => pacman -Syu
+
+
+upgrading packages by force refreshing package list even they appear to be up-to-date => pacman -Syyu
+
+
+search for packages => pacman -Ss string1 string2
+
+
+search for already installed packages => pacman -Qs string1 string2
+
+
+search for package file names in remote packages => pacman -F string1 string2
+
+
+delete all cached versions of installed and uninstalled packages, except for the most recent 3 => paccache -r
+
+
+remove all the cached packages that are not currently installed, and the unused sync database => pacman -Sc
+
+
+remove all files from the cache => pacman -Scc
+
+
+install a ‘local’ package that is not from a remote repository => pacman -U _/path/to/package/package_name-version.pkg.tar.xz
+
+
+install a ‘remote’ package, not contained in an official repository => pacman -U http://www.example.com/repo/example.pkg.tar.xz
