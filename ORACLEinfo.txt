@@ -1,24 +1,27 @@
+Step to create Oracle Database 18c Express edition docker image
+     git clone https://github.com/oracle/docker-images.git
+     cd docker-images
+     cd OracleDatabase/SingleInstance/dockerfiles
+     sudo ./buildContainerImage.sh -h
+     (Use flags as asked) example: sudo ./buildContainerImage.sh -v 18.4.0 -x
+     Wait for really long tome
+
+
 To run oracledb docker:
-docker run \
--itd \
---hostname odb18xe \
---name odb18xe \
--p 1521:1521 \
--p 5500:5500 \
--v ~/DockerShare/odb18xe/oradata:/opt/oracle/oradata \
--v ~/DockerShare/odb18xe/scripts/setup:/opt/oracle/scripts/setup \
--v ~/DockerShare/odb18xe/scripts/startup:/opt/oracle/scripts/startup \
-oracle/database:18.4.0-xe
+     docker run \
+     -itd \
+     --hostname odb18xe \
+     --name odb18xe \
+     -p 1521:1521 \
+     -p 5500:5500 \
+     -v ~/DockerShare/odb18xe/oradata:/opt/oracle/oradata \
+     -v ~/DockerShare/odb18xe/scripts/setup:/opt/oracle/scripts/setup \
+     -v ~/DockerShare/odb18xe/scripts/startup:/opt/oracle/scripts/startup \
+     oracle/database:18.4.0-xe
 
 To resume container: docker start odb18xe
 
-ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts will be given in: docker logs odb18xe
-
-Connection strings:
-     Pluggable database: odb18xe/XEPDB1
-     Multitenant container database: odb18xe
-
-Use https://localhost:5500/em to access Oracle Enterprise Manager for Oracle Database XE
+ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts and connection strings will be given in top of: docker logs odb18xe
 
 To get terminal: docker exec -it --user=oracle myxedb bash
 
