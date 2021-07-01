@@ -28,4 +28,6 @@ To get terminal: docker exec -it --user=oracle myxedb bash
 Set up the required Linux environment variables for Oracle Database: oraenv
 input: XE
 
-To enter sql shell from inside docker terminal: sqlplus sys@XEPDB1 as sysdba
+
+To enter database sql shell from inside docker terminal: sqlplus / as sysdba
+To enter pluggable database sql shell from inside docker terminal: sqlplus sys@XEPDB1 as sysdba
