@@ -23,7 +23,7 @@ To resume container: docker start odb18xe
 
 ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts and connection strings will be given in top of: docker logs odb18xe
 
-To get terminal: docker exec -it --user=oracle myxedb bash
+To get terminal: docker exec -it --user=oracle odb18xe bash
 
 Set up the required Linux environment variables for Oracle Database: oraenv
 input: XE
