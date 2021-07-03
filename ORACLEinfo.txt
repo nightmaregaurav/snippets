@@ -6,6 +6,14 @@ Step to create Oracle Database 18c Express edition docker image
      (Use flags as asked) example: sudo ./buildContainerImage.sh -v 18.4.0 -x
      Wait for really long tome
 
+Create local mount points:
+     mkdir -p ~/DockerShare/odb18xe/oradata/
+     mkdir -p ~/DockerShare/odb18xe/scripts/setup/
+     mkdir -p ~/DockerShare/odb18xe/scripts/startup/
+
+Change permission so amyone could write there:
+     sudo chmod -R 777 ~/DockerShare/odb18xe/
+     
 
 To run oracledb docker:
      docker run \
