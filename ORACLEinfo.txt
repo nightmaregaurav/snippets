@@ -13,13 +13,16 @@ Create local mount points:
 
 Change permission so amyone could write there:
      sudo chmod -R 777 ~/DockerShare/odb18xe/
-     
+
+Add isolated network:
+     docker network create odb18xe_network
 
 To run oracledb docker:
      docker run \
      -itd \
      --hostname odb18xe \
      --name odb18xe \
+     --network odb18xe_network \
      -p 1521:1521 \
      -p 5500:5500 \
      -v ~/DockerShare/odb18xe/oradata:/opt/oracle/oradata \
