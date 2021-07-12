@@ -1,0 +1,23 @@
+Record all command in and out in a spool file:
+	spool /opt/oracle/oradata/spool.txt
+
+Fancy dynamic filename for spool:
+	column timestampforspoolfile new_value timestampforspoolfile;
+	column nameforspoolfile new_value nameforspoolfile;
+	select systimestamp at time zone 'asia/kathmandu' as timestampforspoolfile from dual;
+	select replace('&timestampforspoolfile', '/', ':') as timestampforspoolfile from dual;
+	select replace('&timestampforspoolfile', ' ', '_') as timestampforspoolfile from dual;
+	select '/opt/oracle/oradata/[SpoolFile]__' || '&timestampforspoolfile' || '.txt' as nameforspoolfile from dual;
+	spool &nameforspoolfile;
+	
+
+
+
+Format represenation of name column in output:
+	column nameofcolumn format a<charsize>;
+
+set size of row per page:
+	set pagesize 20;
+
+set width of line:
+	set linesize 100;
