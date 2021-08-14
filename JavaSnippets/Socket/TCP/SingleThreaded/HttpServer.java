@@ -33,6 +33,8 @@ public class HttpServer {
                 InputStreamReader ir = new InputStreamReader(connectionSocket.getInputStream());
                 // Buffered reader to read data in buffer
                 BufferedReader br = new BufferedReader(ir);
+                // Show message in console
+                System.out.println("Visit your browser and type in 'localhost:8800' in web address, hit go button and come to runing server window and stop server to check result in web browser.");
                 // To write output
                 String line = br.readLine();
                 while (!line.isEmpty()) {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package URI_URL.URI;
+package URI_URL;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author nightmare
  */
-public class URIDemo {
+public class URIMethods {
     public static void main(String[] args) {
         try {
             String URIBase = "https://www.google.com.np/";
@@ -86,7 +86,7 @@ public class URIDemo {
             System.out.println("resolved.getRawQuery()  -->  " + resolved.getRawQuery());
             
         } catch (URISyntaxException ex) {
-            Logger.getLogger(URIDemo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(URIMethods.class.getName()).log(Level.SEVERE, null, ex);
         }
        
     }
