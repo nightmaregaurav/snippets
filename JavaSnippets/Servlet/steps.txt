@@ -1,0 +1,7 @@
+compile the java file with added classpath to the servlet api
+move the .class to <proj-root>/WEB-INF/classes
+add servlet-class and <url-pattern> in web.xml
+either copy whole <proj-root> folder to appropriate folder (ex: /var/lib/tomcat9/webapps/)
+or exec java cvf <proj-root>.war * inside <proj-root> and move <proj-root>.war inside appropriate folder (ex: /var/lib/tomcat9/webapps/)
+start server
+visit localhost:8080/<proj-root>/pattern

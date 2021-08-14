@@ -1,0 +1,43 @@
+RAW:
+    step 1: (compile)
+        javac AdderSkeleton.java
+        javac SubtractorSkeleton.java
+        javac Adder.java
+        javac Subtractor.java
+        javac Server.java
+        javac Client.java
+
+    step 2: (place files)
+        MOVE Adder.class to Server
+        MOVE Subtractor.class to Server
+        MOVE Server.class to Server
+        COPY AdderSkeleton.class to Server
+        COPY AdderSkeleton.class to Client
+        COPY SubtractorSkeleton.class to Server
+        COPY SubtractorSkeleton.class to Client
+        COPY Client.class to Client
+
+    step 3: (execute)
+        java Server.class in server
+        java Client.class in server 
+
+BUNDLED JAR:
+    step 1: (compile)
+        javac AdderSkeleton.java
+        javac SubtractorSkeleton.java
+        javac Adder.java
+        javac Server.java
+        javac Subtractor.java
+        javac Client.java
+
+    step 2: (bundle)
+        jar cvfe Client.jar Client AdderSkeleton.class SubtractorSkeleton.class Client.class
+        jar cvfe Server.jar Server AdderSkeleton.class SubtractorSkeleton.class Adder.class Subtractor.class Server.class
+
+    step 3: (place files)
+        MOVE Client.jar to Client
+        MOVE Server.jar to Server
+    
+    step 4: (execute)
+        java -jar Server.jar in server
+        java -jar Client.jar in server 
