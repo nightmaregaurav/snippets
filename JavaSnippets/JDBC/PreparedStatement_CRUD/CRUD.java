@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JDBC.PreparedStatement_CRUD;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,9 +83,9 @@ public class CRUD {
             }
             
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JDBC.Statement_CRUD.CRUD.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(JDBC.Statement_CRUD.CRUD.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

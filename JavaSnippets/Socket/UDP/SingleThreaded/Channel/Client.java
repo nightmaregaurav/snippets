@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Socket.UDP.SingleThreaded.Channel;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -21,7 +20,7 @@ public class Client {
     public static void main(String[] args) {
         try(DatagramChannel channel = DatagramChannel.open()){ // Create datagram Socket Channel which get closed automatically when done
             // Binding the socket to a port
-            channel.socket().bind(new InetSocketAddress(8800));
+            channel.socket().bind(new InetSocketAddress(8801));
             // Buffer to store incoming message
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             // receive message from socket

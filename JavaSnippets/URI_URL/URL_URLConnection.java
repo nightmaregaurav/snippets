@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package URI_URL;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,6 +76,7 @@ public class URL_URLConnection {
             System.out.println("ContentEncoding: "+ hc.getContentEncoding());
             System.out.println("ContentType: "+ hc.getContentType());
             System.out.println("RequestMethod: "+ hc.getRequestMethod());
+            System.out.println("Content: "+ hc.getContent().toString());
             
             System.out.println("Reading cookies managed by the cookie manager:");
             CookieStore store = manager.getCookieStore();

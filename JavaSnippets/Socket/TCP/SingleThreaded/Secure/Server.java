@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Socket.TCP.SingleThreaded.Secure;
 
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +50,7 @@ public class Server {
             // Accept conn from client
             Socket theConnection = server.accept();
             // Stream t oreceive the data
-            InputStream in = theConnection.getInputStream();
+            DataInputStream in = new DataInputStream(theConnection.getInputStream());
             // print out the data
             System.out.println(new String(in.readAllBytes()));
         } catch (NoSuchAlgorithmException ex) {

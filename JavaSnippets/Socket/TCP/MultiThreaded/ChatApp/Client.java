@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Socket.TCP.MultiThreaded.ChatApp;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class Client {
             // Start sending
             senderThread.start(); 
         } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
@@ -63,7 +62,7 @@ class ReceiverThread extends Thread{
                     // Close the connection
                     connection.close();
                 } catch (IOException ex1) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex1);
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex1);
                 } finally {
                     System.exit(0);
                 }

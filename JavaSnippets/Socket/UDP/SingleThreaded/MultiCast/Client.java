@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Socket.UDP.SingleThreaded.MultiCast;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -11,7 +10,6 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

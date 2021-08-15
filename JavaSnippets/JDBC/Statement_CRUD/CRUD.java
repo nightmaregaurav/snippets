@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JDBC.Statement_CRUD;
 
 import java.sql.DriverManager;
 import java.sql.Connection;

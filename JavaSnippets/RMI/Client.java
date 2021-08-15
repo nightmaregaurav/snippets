@@ -43,7 +43,7 @@ public class Client {
             System.out.println(stub1.add(1,2));
             
             // Getting stub object from remote skeleton
-            Subtractor stub2 = (Subtractor) client.getStub("/subtractor");
+            SubtractorSkeleton stub2 = (SubtractorSkeleton) client.getStub("/subtractor");
             // Action
             System.out.println(stub2.sub(1,2));
         } catch (NotBoundException | MalformedURLException | RemoteException ex) {

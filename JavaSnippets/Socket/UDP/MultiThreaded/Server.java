@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Socket.UDP.MultiThreaded;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -22,9 +21,9 @@ public class Server {
             // Creating datagram socket and binding at port 8800
             DatagramSocket datagramSocket = new DatagramSocket(8800);
             // Get client address (localhost this time)
-            InetAddress serverAddress = InetAddress.getLocalHost();
+            InetAddress ClientAddress = InetAddress.getLocalHost();
             // Sender thread
-            SenderThread senderThread = new SenderThread(datagramSocket, serverAddress, 8801);
+            SenderThread senderThread = new SenderThread(datagramSocket, ClientAddress, 8801);
             // Receiver thread
             ReceiverThread receiverThread = new ReceiverThread(datagramSocket);
             // Start the thread
