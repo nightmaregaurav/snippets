@@ -1,5 +1,72 @@
 <style type="text/css">
     html{scroll-behavior: smooth!important;}
+    #base-contents{
+        display: flex!important;
+        flex-direction: column!important;
+        min-height: 100vh!important;
+        min-width: 100%!important;
+        max-width: 100%!important;
+        width: 100%!important;
+    }
+    #base-content-1{display: block;}
+    #base-content-2{
+        display: flex!important;
+        flex-direction: column!important;
+        flex-wrap: wrap!important;
+        justify-content: center!important;
+        flex: auto!important;
+        width: 100%!important;
+        max-width: 100%!important;
+        min-width: 100%!important;
+        margin: 0!important;
+        padding: 0!important;
+    }
+    #base-content-3{}
+    #goToTopWrap {
+        display: none;
+        border: 2px solid #292727;
+        width: 34px;
+        height: 34px;
+        border-radius: 3px;
+        position: fixed;
+        text-align: center;
+        margin-bottom:3px;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        cursor: pointer;
+        background: #453f3f;
+    }
+    #goToTopWrap:hover{
+        background-color: #838282;
+        border: #343436;
+    }
+    #goToTopArrow {
+        display: block;
+        margin: auto;
+        width: 25px;
+        height: 25px;
+        position: relative;
+    }
+    #goToTop-left-wing, #goToTop-right-wing {
+        border-radius: 3px;
+        height: 3px;
+        width: 9px;
+        background-color: white;
+        margin: -1px!important;
+    }
+    #goToTop-left-wing {
+        position: relative;
+        display: inline-block;
+        transform: rotate(-45deg);
+        right: -1px;
+    }
+    #goToTop-right-wing {
+        position: relative;
+        display: inline-block;
+        transform: rotate(45deg);
+        left: -1px;
+    }
     .alert {
         position: relative;
         padding: .75rem 1.25rem;
@@ -76,5 +143,69 @@
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none
+    }
+    .loader-splash{
+        position: fixed;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        height: 100vh !important;
+        width: 100vw !important;
+        background: rgba(121,82,179,0.5);
+        backdrop-filter:blur(4px);
+        -webkit-backdrop-filter:blur(4px);
+    }
+    .loader{
+        width: 80px;
+        height: 67px;
+        margin: auto;
+        position: relative;
+    }
+    .loader .square{
+        background: #009dff;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+        border-radius: 4px;
+        animation-fill-mode: both;
+        animation: motion 2.5s infinite cubic-bezier(0.89, 0.03, 0.06, 1.5);
+    }
+    .loader .path{
+        height: 10px;
+        width: 110px;
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    .loader .path > div{
+        background: #444;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        margin: 0 15px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        animation-fill-mode: both;
+        animation: dynamic 5s infinite cubic-bezier(0.89, 0.03, 0.06, 1.5);
+    }
+    .loader .path > div:nth-child(1){ left: 40px; }
+    .loader .path > div:nth-child(2){ left: 80px; }
+    .loader .path > div:nth-child(3){ left: 120px; }
+    .loader .path > div:nth-child(4){ left: 160px; }
+    .loader .path > div:nth-child(5){ left: 200px; }
+    .loader .path > div:nth-child(6){ left: 240px; }
+    .loader .path > div:nth-child(7){ left: 280px; }
+    @keyframes motion{
+        50%{ transform: rotate(90deg); }
+        100%{ transform: rotate(180deg); }
+    }
+    @keyframes dynamic{
+        0%{ transform: translateX(-40px); }
+        25%{ transform: translateX(-80px); }
+        50%{ transform: translateX(-120px); }
+        75%{ transform: translateX(-160px); }
+        100%{ transform: translateX(-200px); }
     }
 </style>

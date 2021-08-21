@@ -50,3 +50,17 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = '/'
+
+# Database in mysql change data as required
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ere',
+        'USER': 'pma',
+        'PASSWORD': 'pma',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
