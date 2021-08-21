@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tryme;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -11,7 +10,7 @@ import java.awt.Toolkit;
  *
  * @author NightmareGaurav
  */
-public class TryMe {
+public class DancingPointer {
     /**
      * @param args the command line arguments
      * @throws java.awt.AWTException
