@@ -1,4 +1,4 @@
-# Symless / Synergy Pro key generator for version 1
+# Symless / Synergy Pro key generator for version 1 By NightmareGaurav
 import base64
 
 name = input("What is your Name? ")
