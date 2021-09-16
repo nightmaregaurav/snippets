@@ -1,0 +1,21 @@
+docker pull php:8-apache
+mkdir www
+cd www
+docker run -d -p 80:8880 --name apache-php -v "$PWD":/var/www/html php:8-apache
+docker exec -it apache-php bash -c "/bin/bash"
+
+
+
+inside /etc/apache2/apache2.conf
+
+to deny access to a file (can use regex)
+<FilesMatch "Captured.txt">
+	Require all denied
+</FilesMatch>
+to deny access to a dir (can use regex)
+<Directory "/var/www/mysite">
+    Require all denied
+</Directory>
+
+
+apachectl restart
