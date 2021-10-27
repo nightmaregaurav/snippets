@@ -1,0 +1,14 @@
+sudo dotnet dev-certs https -v
+sudo dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+
+sudo openssl pkcs12 -in ~/.dotnet/corefx/cryptography/x509stores/my/<>.pfx -nokeys -out ~/localhost.crt -nodes
+
+sudo mv localhost.crt /usr/local/share/ca-certificates/aspnet/localhost.crt
+
+sudo certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
+
+sudo certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/localhost.crt
+sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/localhost.crt
+
+sudo trust extract-compat
