@@ -7,6 +7,7 @@ sudo mysql -u root -p
 
 CREATE USER 'pma'@'localhost' identified by 'pma';
 grant all on *.* to 'pma'@'localhost';
+ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('');
 commit;
 exit;
 
