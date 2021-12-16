@@ -1,15 +1,15 @@
+serveruser=$(ps -ef | egrep '(httpd|apache2|apache)' | grep -v `whoami` | grep -v root | head -n1 | awk '{print $1}')
+
 # Debian
-cd /opt/lampp/
-sudo addgroup lamppusers
-sudo adduser $USER lamppusers
-sudo adduser daemon lamppusers
-sudo chown $USER:daemon -R htdocs
+sudo addgroup serverusers
+sudo adduser $USER serverusers
+sudo adduser $serveruser serverusers
+sudo chown $USER:$serveruser -R htdocs
 sudo chmod u=rwX,g=rwX,o=rX -R htdocs
 
 # Arch
-cd /opt/lampp/
-sudo groupadd lamppusers
-sudo usermod -aG lamppusers $USER
-sudo usermod -aG lamppusers daemon
-sudo chown $USER:daemon -R htdocs
+sudo groupadd serverusers
+sudo usermod -aG serverusers $USER
+sudo usermod -aG serverusers $serveruser
+sudo chown $USER:$serveruser -R htdocs
 sudo chmod u=rwX,g=rwX,o=rX -R htdocs
