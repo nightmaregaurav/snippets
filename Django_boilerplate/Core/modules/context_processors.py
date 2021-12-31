@@ -12,8 +12,13 @@ site_settings_abstract = {
 
 
 def urls(request):
-    app = request.resolver_match.app_name
-    if app:
+    app = ''
+    # noinspection PyBroadException
+    try:
+        app = request.resolver_match.app_name
+        if app:
+            app += '/'
+    except Exception:
         app += '/'
 
     app = app.strip()

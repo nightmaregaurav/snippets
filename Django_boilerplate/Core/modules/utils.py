@@ -1,3 +1,5 @@
+import random
+import string
 import sys
 from io import BytesIO
 from PIL import Image
@@ -23,3 +25,7 @@ def thumbnail_gen(image, ww, hh):
     output.seek(0)
 
     return InMemoryUploadedFile(output, 'ImageField', "%s.png" % name, 'image/png', sys.getsizeof(output), None)
+
+
+def random_string_gen(size=10, chars=string.ascii_lowercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
