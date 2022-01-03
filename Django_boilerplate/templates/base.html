@@ -23,6 +23,7 @@
     {% block extra_head %}{% endblock extra_head %}
 
     {# Get page icon from site settings if available or use favicon.png as default #}
+    <link rel="apple-touch-icon" type="image/png" href="{% if site_setting.site_logo %}{{ site_setting.site_logo.url }}{% else %}{{ STATIC_URL }}favicon.png{% endif %}">
     <link rel="shortcut icon" type="image/png" href="{% if site_setting.site_logo %}{{ site_setting.site_logo.url }}{% else %}{{ STATIC_URL }}favicon.png{% endif %}"/>
 
     {# CSS for base template, can be changed using {% block base_css %}...{% endblock base_css %} #}
