@@ -1,52 +1,53 @@
-Step to create Oracle Database 18c Express edition docker image
+Step to create Oracle Database docker image
      git clone https://github.com/oracle/docker-images.git
      cd docker-images
      cd OracleDatabase/SingleInstance/dockerfiles
      sudo ./buildContainerImage.sh -h
-     (Use flags as asked) example: sudo ./buildContainerImage.sh -v 18.4.0 -x
-     Wait for really long tome
+     (Use flags as needed) example: sudo ./buildContainerImage.sh -x/-c/-e -v <version> -o '--build-arg SLIMMING=false'
+     Wait for really long tome...
 
-Create local mount points:
-     mkdir -p ~/DockerShare/odb18xe/oradata/
-     mkdir -p ~/DockerShare/odb18xe/scripts/setup/
-     mkdir -p ~/DockerShare/odb18xe/scripts/startup/
+Create local mount points for important data:
+     mkdir -p ~/DockerShare/<container_name>/oradata/
+     mkdir -p ~/DockerShare/<container_name>/scripts/setup/
+     mkdir -p ~/DockerShare/<container_name>/scripts/startup/
 
 Change permission so amyone could write there:
-     sudo chmod -R 777 ~/DockerShare/odb18xe/
+     sudo chmod -R 774 ~/DockerShare/<container_name>/
 
 Add isolated network:
-     docker network create odb18xe_network
+     docker network create <container_name>_network
 
 To run oracledb docker:
      docker run \
      -itd \
-     --hostname odb18xe \
-     --name odb18xe \
-     --network odb18xe_network \
+     --hostname <container_name> \
+     --name <container_name> \
+     --network <container_name>_network \
      -p 1521:1521 \
      -p 5500:5500 \
-     -v ~/DockerShare/odb18xe/oradata:/opt/oracle/oradata \
-     -v ~/DockerShare/odb18xe/scripts/setup:/opt/oracle/scripts/setup \
-     -v ~/DockerShare/odb18xe/scripts/startup:/opt/oracle/scripts/startup \
-     oracle/database:18.4.0-xe
+     -v ~/DockerShare/<container_name>/oradata:/opt/oracle/oradata \
+     -v ~/DockerShare/<container_name>/scripts/setup:/opt/oracle/scripts/setup \
+     -v ~/DockerShare/<container_name>/scripts/startup:/opt/oracle/scripts/startup \
+     oracle/database:<version_of_image>
 
-To resume container after stopping or shutdown: docker start odb18xe
+To resume container after stopping or shutdown: docker start <container_name>
 
-ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts and connection strings will be given in top of: docker logs odb18xe
+ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts and connection strings will be given in top of: docker logs <container_name> (usually there is no root password)
 
 To setup rlwrap for sqlplus commands:
      open bash terminal as root:
-          docker exec -it odb18xe bash
+          docker exec -it <container_name> bash
           RUN:
                rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
                yum install rlwrap
 
-To get terminal: docker exec -it --user=oracle odb18xe bash
+To get terminal: docker exec -it --user=oracle <container_name> bash
 
-Set up the required Linux environment variables for Oracle Database: oraenv
-input: XE
-
-To get sqlplus console: docker exec -it --user=oracle odb18xe bash -c "sleep 0.0001; rlwrap sqlplus / as sysdba;"
+To get sqlplus console: docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; rlwrap sqlplus / as sysdba;"
 
 To enter database sql shell from inside docker terminal: rlwrap sqlplus / as sysdba
 To enter pluggable database sql shell from inside docker terminal: rlwrap sqlplus sys@XEPDB1 as sysdba
+
+
+Pluggable database: <container_name>/XEPDB1
+Multitenant container database: <container_name>
