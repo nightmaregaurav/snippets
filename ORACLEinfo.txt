@@ -38,6 +38,7 @@ To setup rlwrap for sqlplus commands:
      open bash terminal as root:
           docker exec -it <container_name> bash
           RUN:
+               su root
                rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
                yum install rlwrap
 
