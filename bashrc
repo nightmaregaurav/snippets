@@ -110,21 +110,23 @@ function __setprompt
 	local LAST_COMMAND=$? # Must come first!
 
 	# Define colors
-	local LIGHTGRAY="\033[1;37m"
-	local WHITE="\033[1;37m"
-	local BLACK="\033[1;30m"
-	local DARKGRAY="\033[1;30m"
-	local RED="\033[1;31m"
+	local LIGHTGRAY="\033[1;37m" # lightwhite
+	local DARKGRAY="\033[1;30m" # lightblack
+	local WHITE="\033[0;37m"
+	local LIGHTWHITE="\033[1;37m"
+	local BLACK="\033[0;30m"
+	local LIGHTBLACK="\033[1;30m"
+	local RED="\033[0;31m"
 	local LIGHTRED="\033[1;31m"
-	local GREEN="\033[1;32m"
+	local GREEN="\033[0;32m"
 	local LIGHTGREEN="\033[1;32m"
-	local BROWN="\033[1;33m"
-	local YELLOW="\033[1;33m"
-	local BLUE="\033[1;34m"
+	local BROWN="\033[0;33m" # yellow
+	local YELLOW="\033[1;33m" # light yellow
+	local BLUE="\033[0;34m"
 	local LIGHTBLUE="\033[1;34m"
-	local MAGENTA="\033[1;35m"
+	local MAGENTA="\033[0;35m"
 	local LIGHTMAGENTA="\033[1;35m"
-	local CYAN="\033[1;36m"
+	local CYAN="\033[0;36m"
 	local LIGHTCYAN="\033[1;36m"
 	local NOCOLOR="\033[0m"
 
@@ -171,45 +173,40 @@ function __setprompt
 	fi
 
 	# Date
-	PS1+="\[${DARKGRAY}\](\[${CYAN}\]\$(date +%a) $(date +%b-'%-m')" # Date
-	PS1+="${BLUE} $(date +'%-I':%M:%S%P)\[${DARKGRAY}\])-" # Time
+	PS1+="\[${DARKGRAY}\](\[${LIGHTCYAN}\]\$(date +%a) $(date +%b-'%-m')" # Date
+	PS1+="${LIGHTBLUE} $(date +'%-I':%M%P)\[${DARKGRAY}\])-" # Time
 
 	# CPU
-	PS1+="(\[${MAGENTA}\]CPU $(cpu)%"
+	PS1+="(\[${LIGHTMAGENTA}\]CPU $(cpu)%"
 
 	# Jobs
-	PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]\j"
+	PS1+="\[${DARKGRAY}\]:\[${LIGHTMAGENTA}\]\j"
 
 	# Network Connections (for a server - comment out for non-server)
-	PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
+	PS1+="\[${DARKGRAY}\]:\[${LIGHTMAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
 
 	PS1+="\[${DARKGRAY}\])-"
 
-	# User and server
-	local SSH_IP=`echo $SSH_CLIENT | awk '{ print $1 }'`
-	local SSH2_IP=`echo $SSH2_CLIENT | awk '{ print $1 }'`
-	if [ $SSH2_IP ] || [ $SSH_IP ] ; then
-		PS1+="(\[${RED}\]\u@\h"
-	else
-		PS1+="(\[${RED}\]\u"
-	fi
+	# hostname
+	PS1+="(\[${LIGHTWHITE}\]\h"
+
 
 	# Current directory
-	PS1+="\[${DARKGRAY}\]:\[${BROWN}\]\w\[${DARKGRAY}\])-"
+	PS1+="\[${DARKGRAY}\]:\[${YELLOW}\]\w\[${DARKGRAY}\])-"
 
 	# Total size of files in current directory
-	PS1+="(\[${GREEN}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${DARKGRAY}\]:"
+	PS1+="(\[${LIGHTRED}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${DARKGRAY}\]:"
 
 	# Number of files
-	PS1+="\[${GREEN}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${DARKGRAY}\])"
+	PS1+="\[${LIGHTRED}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${DARKGRAY}\])"
 
 	# Skip to the next line
 	PS1+="\n"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
+		PS1+="\[${DARKGRAY}\](\[${LIGHTGREEN}\]\u\[${DARKGRAY}\])\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
 	else
-		PS1+="\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
+		PS1+="\[${DARKGRAY}\](\[${LIGHTRED}\]\u\[${DARKGRAY}\])\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
 	fi
 
 	# PS2 is used to continue a command using the \ character
