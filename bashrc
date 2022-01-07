@@ -133,7 +133,6 @@ function __setprompt
 	# Show error exit code if there is one
 	if [[ $LAST_COMMAND != 0 ]]; then
 		PS1="\[${RED}\](\[${LIGHTRED}\]ERROR\[${RED}\])-(\[${LIGHTRED}\]Exit Code \[${WHITE}\]${LAST_COMMAND}\[${RED}\])-(\[${LIGHTRED}\]"
-		# PS1="\[${DARKGRAY}\](\[${LIGHTRED}\]ERROR\[${DARKGRAY}\])-(\[${RED}\]Exit Code \[${LIGHTRED}\]${LAST_COMMAND}\[${DARKGRAY}\])-(\[${RED}\]"
 		if [[ $LAST_COMMAND == 1 ]]; then
 			PS1+="General error"
 		elif [ $LAST_COMMAND == 2 ]; then
@@ -167,55 +166,55 @@ function __setprompt
 		else
 			PS1+="Unknown error code"
 		fi
-		PS1+="\[${DARKGRAY}\])\[${NOCOLOR}\]\n"
+		PS1+=")\[${NOCOLOR}\]\n"
 	else
 		PS1=""
 	fi
 
 	# Date
-	PS1+="\[${DARKGRAY}\](\[${LIGHTCYAN}\]\$(date +%a) $(date +%b-'%-m')" # Date
-	PS1+="${LIGHTBLUE} $(date +'%-I':%M%P)\[${DARKGRAY}\])-" # Time
+	PS1+="\[${WHITE}\](\[${LIGHTCYAN}\]\$(date +%a) $(date +%b-'%-m')" # Date
+	PS1+="${LIGHTBLUE} $(date +'%-I':%M%P)\[${WHITE}\])-" # Time
 
 	# CPU
 	PS1+="(\[${LIGHTMAGENTA}\]CPU $(cpu)%"
 
 	# Jobs
-	PS1+="\[${DARKGRAY}\]:\[${LIGHTMAGENTA}\]\j"
+	PS1+="\[${WHITE}\]:\[${LIGHTMAGENTA}\]\j"
 
 	# Network Connections (for a server - comment out for non-server)
-	PS1+="\[${DARKGRAY}\]:\[${LIGHTMAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
+	PS1+="\[${WHITE}\]:\[${LIGHTMAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
 
-	PS1+="\[${DARKGRAY}\])-"
+	PS1+="\[${WHITE}\])-"
 
 	# hostname
 	PS1+="(\[${LIGHTWHITE}\]\h"
 
 
 	# Current directory
-	PS1+="\[${DARKGRAY}\]:\[${YELLOW}\]\w\[${DARKGRAY}\])-"
+	PS1+="\[${WHITE}\]:\[${YELLOW}\]\w\[${WHITE}\])-"
 
 	# Total size of files in current directory
-	PS1+="(\[${LIGHTRED}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${DARKGRAY}\]:"
+	PS1+="(\[${LIGHTRED}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${WHITE}\]:"
 
 	# Number of files
-	PS1+="\[${LIGHTRED}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${DARKGRAY}\])"
+	PS1+="\[${LIGHTRED}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${WHITE}\])"
 
 	# Skip to the next line
 	PS1+="\n"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\[${DARKGRAY}\](\[${LIGHTGREEN}\]\u\[${DARKGRAY}\])\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
+		PS1+="\[${WHITE}\](\[${LIGHTGREEN}\]\u\[${WHITE}\])\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
 	else
-		PS1+="\[${DARKGRAY}\](\[${LIGHTRED}\]\u\[${DARKGRAY}\])\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
+		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\])\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
 	fi
 
 	# PS2 is used to continue a command using the \ character
-	PS2="\[${DARKGRAY}\] >>>\[${NOCOLOR}\] "
+	PS2="\[${GREEN}\] >>>\[${NOCOLOR}\] "
 
 	# PS3 is used to enter a number choice in a script
-	PS3='Please enter a number from above list: '
+	PS3="\[${GREEN}\] Please enter a number from above list:\[${NOCOLOR}\] "
 
 	# PS4 is used for tracing a script in debug mode
-	PS4='\[${DARKGRAY}\]+\[${NOCOLOR}\] '
+	PS4="\[${GREEN}\]+\[${NOCOLOR}\] "
 }
 PROMPT_COMMAND='__setprompt'
