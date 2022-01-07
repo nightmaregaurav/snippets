@@ -30,9 +30,15 @@ To run oracledb docker:
      -v ~/DockerShare/<container_name>/scripts/startup:/opt/oracle/scripts/startup \
      oracle/database:<version_of_image>
 
+Connection strings will be given in top of: docker logs <container_name>
+
 To resume container after stopping or shutdown: docker start <container_name>
 
-ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts and connection strings will be given in top of: docker logs <container_name> (usually there is no root password)
+To get terminal: docker exec -it --user=oracle <container_name> bash
+
+Initially there is no root password. Set ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts by: (Won't set for /)
+     docker exec -it --user=oracle <container_name> bash
+     ./setPassword.sh <newpassword>
 
 To setup rlwrap for sqlplus commands:
      open bash terminal as root:
@@ -41,13 +47,13 @@ To setup rlwrap for sqlplus commands:
                su root
                rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
                yum install rlwrap
+               exit (To switch back to normal user)
+               echo "alias sqlplus='rlwrap sqlplus'" >> .bashrc
 
-To get terminal: docker exec -it --user=oracle <container_name> bash
+To get sqlplus console: docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; sqlplus / as sysdba;"
 
-To get sqlplus console: docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; rlwrap sqlplus / as sysdba;"
-
-To enter database sql shell from inside docker terminal: rlwrap sqlplus / as sysdba
-To enter pluggable database sql shell from inside docker terminal: rlwrap sqlplus sys@XEPDB1 as sysdba
+To enter database sql shell from inside docker terminal: sqlplus / as sysdba
+To enter pluggable database sql shell from inside docker terminal: sqlplus sys@XEPDB1 as sysdba
 
 
 Pluggable database: <container_name>/XEPDB1
