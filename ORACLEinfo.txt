@@ -36,7 +36,7 @@ To resume container after stopping or shutdown: docker start <container_name>
 
 To get terminal: docker exec -it --user=oracle <container_name> bash
 To automate it: (After this, just type <container_name>-shell in terminal after starting container to get terminal)
-     sudo echo "docker exec -it --user=oracle <container_name> bash" >> <container_name>-shell
+     sudo echo "docker start <container_name> >> /dev/null && docker exec -it --user=oracle <container_name> bash" >> <container_name>-shell
      sudo mv <container_name>-shell /bin/
      sudo chmod 774 /bin/<container_name>-shell
 
