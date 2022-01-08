@@ -11,7 +11,7 @@ Create local mount points for important data:
      mkdir -p ~/DockerShare/<container_name>/scripts/setup/
      mkdir -p ~/DockerShare/<container_name>/scripts/startup/
 
-Change permission so amyone could write there:
+Change permission so anyone could write there:
      sudo chmod -R 774 ~/DockerShare/<container_name>/
 
 Add isolated network:
