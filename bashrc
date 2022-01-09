@@ -208,6 +208,11 @@ function __setprompt
 		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*' | colrm 1 2)\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
 	fi
 
+	# Add python virtual env name if available
+	if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT-}" ] ; then
+	        PS1="`basename \"$VIRTUAL_ENV\"` ~ $PS1"
+	fi
+
 	# PS2 is used to continue a command using the \ character
 	PS2="\[${GREEN}\] >>>\[${NOCOLOR}\] "
 
