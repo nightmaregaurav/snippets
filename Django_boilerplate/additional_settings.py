@@ -62,17 +62,18 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Database in mysql
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DB_NAME'),
-        'USER': os.getenv('MYSQL_DB_USER'),
-        'PASSWORD': os.getenv('MYSQL_DB_PASS'),
-        'HOST': os.getenv('MYSQL_DB_HOST'),
-        'PORT': os.getenv('MYSQL_DB_PORT'),
-        'TIME_ZONE': os.getenv('MYSQL_DB_TIME_ZONE'),
+if os.getenv('USE_MYSQL') == "True":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQL_DB_NAME'),
+            'USER': os.getenv('MYSQL_DB_USER'),
+            'PASSWORD': os.getenv('MYSQL_DB_PASS'),
+            'HOST': os.getenv('MYSQL_DB_HOST'),
+            'PORT': os.getenv('MYSQL_DB_PORT'),
+            'TIME_ZONE': os.getenv('MYSQL_DB_TIME_ZONE'),
+        }
     }
-}
 
 
 AUTHENTICATION_BACKENDS = [
