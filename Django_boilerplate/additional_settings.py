@@ -3,6 +3,11 @@ import os  # noqa: E402
 import sys  # noqa: E402
 from django.contrib import messages  # noqa: E402
 from urllib import parse  # noqa: E402
+from dotenv import load_dotenv
+
+# autoload the env vars in .env file
+project_folder = os.path.expanduser(BASE_DIR)
+load_dotenv(BASE_DIR / '.env')
 
 # add site name to env variable first
 SITE_NAME = os.getenv('SITE_NAME')
