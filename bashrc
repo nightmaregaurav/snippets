@@ -203,9 +203,9 @@ function __setprompt
 	PS1+="\n"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\[${WHITE}\](\[${LIGHTGREEN}\]\u\[${WHITE}\])\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
+		PS1+="\[${WHITE}\](\[${LIGHTGREEN}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*' | colrm 1 2)\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
 	else
-		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\])\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
+		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*' | colrm 1 2)\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
 	fi
 
 	# PS2 is used to continue a command using the \ character
