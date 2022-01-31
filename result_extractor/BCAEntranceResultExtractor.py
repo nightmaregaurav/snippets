@@ -9,7 +9,7 @@ result_file.close()
 
 mode = input("Input 1 for Single, anything else for all: ")
 campus_list = list()
-if mode == 1:
+if mode == '1':
     campus_code = input("Input the symbol no of campus(eg. 02): ")
     campus_name = input("Input the name campus(eg. Mechi Multiple Campus): ")
     campus_address = input("Input the address campus(eg. Bhadrapur, Jhapa.): ")
@@ -20,6 +20,7 @@ if mode == 1:
     })
 else:
     conn = sqlite3.connect('campus.db')
+    # noinspection SqlDialectInspection,SqlNoDataSourceInspection
     cursor = conn.execute("SELECT code, name, address from campus")
     for row in cursor:
         campus_list.append({
@@ -31,7 +32,9 @@ else:
 for campus in campus_list:
     campus_code = campus['campus_code']
     campus_name = campus['campus_name']
+    campus_name = " ".join(campus_name.replace(" ,", ",").replace(",", ", ").split()).title()
     campus_address = campus['campus_address']
+    campus_address = " ".join(campus_address.replace(" ,", ",").replace(",", ", ").split()).title()
 
     print("\n\n\tAllNepalRank\tCampusRank\t SymbolNo\n")
     print("-------------------------------------------\n\n")
@@ -98,7 +101,9 @@ for campus in campus_list:
 
     for symbol_no in merit_list:
         tu_rank += 1
-        if symbol_no.startswith(f"{campus_code}-"):
+        campus_code_src = int(symbol_no.split("-")[0])
+        campus_code_dest = int(campus_code)
+        if campus_code_dest == campus_code_src:
             campus_rank += 1
             print(f"\t {tu_rank}\t {campus_rank}\t {symbol_no}\n")
 
@@ -155,13 +160,30 @@ for campus in campus_list:
     print(f"\nDear admin, \n"
           f"Upload PDF, HTML, and TXT files of campus' result which are inside 'result_outputs' folder of your current directory to google drive.\n"
           f"Share the files so anyone with the link may access them.\n"
-          f"Copy the PDF's link.\n"
+          f"Copy the PDF link.\n"
           f"Replace <<replace_me>> in fifth line of '{campus_code}_post_file.txt with the link copied.\n"
           f"Copy and paste whatever is in '{campus_code}_post_file.txt' and post it in the facebook page after attaching photos in {campus_code} folder of your current director.\n"
           f"'.\n\n\tRegards\n\t-Gaurav Nyaupane\n\n")
 
-    if mode == 1:
+    if mode == '1':
         conn = sqlite3.connect('campus.db')
-        conn.execute(f"INSERT INTO campus(code,name,address) VALUES('{campus_code}', '{campus_name}','{campus_address}')")
-        conn.commit()
+        # noinspection SqlDialectInspection,SqlNoDataSourceInspection
+        cursor = conn.execute(f"SELECT COUNT(*) FROM campus where code = '{campus_code}'")
+        count = cursor.fetchone()[0]
+
+        if count > 0:
+            action = input("Do you want to save this campus? (Y for yes): ")
+        else:
+            action = input("Do you want to update this campus with new details? (Y for yes): ")
+
+        if action.lower() == 'y':
+            if count == 0:
+                # noinspection SqlDialectInspection,SqlNoDataSourceInspection
+                conn.execute(f"INSERT INTO campus(code,name,address) VALUES('{campus_code}', '{campus_name}','{campus_address}')")
+            else:
+                # noinspection SqlDialectInspection,SqlNoDataSourceInspection
+                conn.execute(f"UPDATE campus SET name = '{campus_name}', address = '{campus_address}' WHERE code = '{campus_code}'")
+
+            conn.commit()
+
         conn.close()
