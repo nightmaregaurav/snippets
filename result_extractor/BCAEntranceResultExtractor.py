@@ -132,9 +132,9 @@ for campus in campus_list:
 
     post_file_content += f"Total Passed student(TU): {tu_rank}\n" \
                          f"Total Passed student(This Campus): {campus_rank}\n\n" \
-                         f"Search your campus' result using hashtag<campus code>(eg. #BCA2021TU_{campus_code})\n" \
+                         f"Search your campus' result using hashtag<campus code>(eg. #BCA{year}TU_{campus_code})\n" \
                          f"If result for your campus is not published, inbox us your campus' code/symbol no to get it published.\n" \
-                         f"#BCA #EntranceResult2021 #BCATU\n\n" \
+                         f"#BCA #EntranceResult{year} #BCATU\n\n" \
                          f"Extracted By: Gaurav Nyaupane (MMC BCA 2017)"
 
     text_file_content += "\n\n\nExtracted By: Gaurav Nyaupane (MMC BCA 2017)"
