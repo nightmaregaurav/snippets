@@ -7,6 +7,8 @@ result_file = open("BCA_RESULT_ALL_RAW.txt")
 merit_list = [symbol_no.strip() for symbol_no in result_file]
 result_file.close()
 
+year = input("Input Result Year: ")
+
 mode = input("Input 1 for Single, anything else for all: ")
 campus_list = list()
 if mode == '1':
@@ -38,7 +40,7 @@ for campus in campus_list:
 
     print("\n\n\tAllNepalRank\tCampusRank\t SymbolNo\n")
     print("-------------------------------------------\n\n")
-    text_file_content = "BCA Entrance Result\n" \
+    text_file_content = f"BCA Entrance Result: {year}\n" \
                         f"Campus: {campus_name}\n" \
                         f"Address: {campus_address}\n" \
                         f"Code: {campus_code}\n"
@@ -46,7 +48,7 @@ for campus in campus_list:
     html_file_content = "<!DOCTYPE html>\n" \
                         "<html>\n" \
                         "<head>\n" \
-                        f"	<title>{campus_code} BCA Entrance Result</title>\n" \
+                        f"	<title>{campus_code} BCA Entrance Result: {year}</title>\n" \
                         "</head>\n" \
                         "<body>\n" \
                         "	<center>\n" \
@@ -54,7 +56,7 @@ for campus in campus_list:
                         "			<thead>\n" \
                         "				<tr>\n" \
                         "					<th colspan='3'>\n" \
-                        "						BCA Entrance Result\n" \
+                        f"						BCA Entrance Result: {year}\n" \
                         "					</th>\n" \
                         "				</tr>\n" \
                         "				<tr>\n" \
@@ -171,7 +173,7 @@ for campus in campus_list:
         cursor = conn.execute(f"SELECT COUNT(*) FROM campus where code = '{campus_code}'")
         count = cursor.fetchone()[0]
 
-        if count > 0:
+        if count == 0:
             action = input("Do you want to save this campus? (Y for yes): ")
         else:
             action = input("Do you want to update this campus with new details? (Y for yes): ")
