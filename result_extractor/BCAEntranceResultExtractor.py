@@ -8,8 +8,8 @@ merit_list = [symbol_no.strip() for symbol_no in result_file]
 result_file.close()
 
 year = input("Input Result Year: ")
+mode = input("Input 1 for New Single, 2 for Old Single, anything else for all: ")
 
-mode = input("Input 1 for Single, anything else for all: ")
 campus_list = list()
 if mode == '1':
     campus_code = input("Input the symbol no of campus(eg. 02): ")
@@ -19,6 +19,17 @@ if mode == '1':
         'campus_code': campus_code,
         'campus_name': campus_name,
         'campus_address': campus_address
+    })
+elif mode == '2':
+    campus_code = input("Input the symbol no of campus(eg. 02): ")
+    conn = sqlite3.connect('campus.db')
+    # noinspection SqlDialectInspection,SqlNoDataSourceInspection
+    cursor = conn.execute(f"SELECT name, address from campus WHERE code = '{campus_code}'")
+    row = cursor.fetchone()
+    campus_list.append({
+        'campus_code': campus_code,
+        'campus_name': row[0],
+        'campus_address': row[1]
     })
 else:
     conn = sqlite3.connect('campus.db')
