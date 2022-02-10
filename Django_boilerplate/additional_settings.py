@@ -8,7 +8,6 @@ from urllib import parse  # noqa: E402
 from dotenv import load_dotenv  # noqa: E402
 
 # autoload the env vars in .env file
-project_folder = os.path.expanduser(BASE_DIR)
 load_dotenv(BASE_DIR / '.env')
 
 # add site name to env variable first
