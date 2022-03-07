@@ -11,6 +11,16 @@ from django.contrib import messages  # noqa: E402
 from urllib import parse  # noqa: E402
 from dotenv import load_dotenv  # noqa: E402
 
+
+def get_bool_or_default_env_var(name: str, default: bool):
+    str_value: str = os.getenv(name).lower()
+    if str_value == "true":
+        return True
+    if str_value == "false":
+        return False
+    return default
+
+
 # autoload the env vars in .env file
 load_dotenv(BASE_DIR / '.env')
 
@@ -18,19 +28,19 @@ load_dotenv(BASE_DIR / '.env')
 SITE_NAME = os.getenv('SITE_NAME')
 
 # noinspection PyRedeclaration
-DEBUG = os.getenv('DJANGO_DEBUG') == "True"
+DEBUG = get_bool_or_default_env_var("DJANGO_DEBUG", True)
 if not DEBUG:
     # add secret key to env variable first
     SECRET_KEY = os.getenv('SECRET_KEY')
     ALLOWED_HOSTS = [parse.urlsplit(SITE_NAME).hostname, *os.getenv('ALLOWED_HOSTS').split()]
-    SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE') or True
-    SECURE_BROWSER_XSS_FILTER = os.getenv('SECURE_BROWSER_XSS_FILTER') or True
+    SESSION_COOKIE_SECURE = get_bool_or_default_env_var("SESSION_COOKIE_SECURE", True)
+    SECURE_BROWSER_XSS_FILTER = get_bool_or_default_env_var("SECURE_BROWSER_XSS_FILTER", True)
     # noinspection SpellCheckingInspection
-    SECURE_CONTENT_TYPE_NOSNIFF = os.getenv('SECURE_CONTENT_TYPE_NOSNIFF') or True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS') or True
+    SECURE_CONTENT_TYPE_NOSNIFF = get_bool_or_default_env_var("SECURE_CONTENT_TYPE_NOSNIFF", True)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = get_bool_or_default_env_var("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
     SECURE_HSTS_SECONDS = os.getenv('SECURE_HSTS_SECONDS') or 31536000
     SECURE_REDIRECT_EXEMPT = [*os.getenv('SECURE_REDIRECT_EXEMPT').split()]
-    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT') or True
+    SECURE_SSL_REDIRECT = get_bool_or_default_env_var("SECURE_SSL_REDIRECT", True)
     SECURE_PROXY_SSL_HEADER = os.getenv('SECURE_PROXY_SSL_HEADER').split() or ('HTTP_X_FORWARDED_PROTO', 'https')
 else:
     ALLOWED_HOSTS = ['*', ]
@@ -84,7 +94,7 @@ MIDDLEWARE += [
 
 # configuration to manage email service
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND') or 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') or True
+EMAIL_USE_TLS = get_bool_or_default_env_var("EMAIL_USE_TLS", True)
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
