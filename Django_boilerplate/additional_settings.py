@@ -13,7 +13,13 @@ from dotenv import load_dotenv  # noqa: E402
 
 
 def get_bool_or_default_env_var(name: str, default: bool):
-    str_value: str = os.getenv(name).lower()
+    str_value: str = os.getenv(name)
+
+    if str_value is None:
+        return default
+
+    str_value = str_value.lower()
+
     if str_value == "true":
         return True
     if str_value == "false":
