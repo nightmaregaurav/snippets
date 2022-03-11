@@ -1,0 +1,33 @@
+#!/bin/bash
+
+blank=$(echo " " | tr -d ' ' | tr -d '	' | tr -d '\n');
+
+initial_command="$*";
+if [[ "$initial_command" != "$blank" ]]; then
+	echo "Executing initial command as you asked: $initial_command";
+	$initial_command;
+fi;
+
+echo "You are currently in $(pwd)";
+read -p "Enter git command to run in all dirs >>> " x;
+gitCmd=$(echo $x | sed 's/^[\t]*//g');
+echo "";
+
+for i in ./*;
+do
+	if [[ -d $i ]]; then
+		cd $i;
+
+		gitOutput=$($gitCmd 2>&1);
+		gitOutput_test=$(echo $gitOutput | tr -d ' ' | tr -d '	' | tr -d '\n');
+
+		if [[ "$gitOutput_test" != "$blank" ]] ; then
+			echo "************************************";
+			echo "Running command for $i";
+			echo "************************************";
+			echo "$gitOutput";
+		fi;
+
+		cd ..;
+	fi;
+done;
