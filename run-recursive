@@ -9,7 +9,7 @@ if [[ "$initial_command" != "$blank" ]]; then
 fi;
 
 echo "You are currently in $(pwd)";
-read -p "Enter git command to run in all dirs >>> " x;
+read -p "Enter command to run in all dirs >>> " x;
 gitCmd=$(echo $x | sed 's/^[\t]*//g');
 echo "";
 
