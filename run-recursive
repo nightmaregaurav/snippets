@@ -16,7 +16,7 @@ echo "";
 for i in ./*;
 do
 	if [[ -d $i ]]; then
-		cd $i;
+		cd "$i";
 
 		gitOutput=$($gitCmd 2>&1);
 		gitOutput_test=$(echo $gitOutput | tr -d ' ' | tr -d '	' | tr -d '\n');
