@@ -103,8 +103,10 @@ def publish_result(_year, _campus_code, _campus_name="", _campus_address="", _mo
         try:
             campus_name = campus_list[campus_code]['campus_name']
             campus_name = " ".join(campus_name.replace(" ,", ",").replace(",", ", ").split()).title()
+            _campus_name = campus_name
             campus_address = campus_list[campus_code]['campus_address']
             campus_address = " ".join(campus_address.replace(" ,", ",").replace(",", ", ").split()).title()
+            _campus_address = campus_address
         except KeyError:
             unknown_campus_list.append(campus_code)
             continue
@@ -204,26 +206,27 @@ def publish_result(_year, _campus_code, _campus_name="", _campus_address="", _mo
             # noinspection SqlDialectInspection,SqlNoDataSourceInspection,PyUnboundLocalVariable
             summary_cursor.execute(f"INSERT INTO summary VALUES({campus_code}, '{campus_name}', '{campus_address}', {campus_rank})")
 
-        os.makedirs("result_outputs", exist_ok=True)
-        os.makedirs("result_outputs_post_files", exist_ok=True)
-        post_file = open(f"result_outputs_post_files/{campus_code}_post_file.txt", "w")
-        text_file = open(f"result_outputs/{campus_code}.txt", "w")
-        html_file = open(f"result_outputs/{campus_code}.html", "w")
+        if campus_rank != 0:
+            os.makedirs("result_outputs", exist_ok=True)
+            os.makedirs("result_outputs_post_files", exist_ok=True)
+            post_file = open(f"result_outputs_post_files/{campus_code}_post_file.txt", "w")
+            text_file = open(f"result_outputs/{campus_code}.txt", "w")
+            html_file = open(f"result_outputs/{campus_code}.html", "w")
 
-        post_file.write(post_file_content)
-        text_file.write(text_file_content)
-        html_file.write(html_file_content)
+            post_file.write(post_file_content)
+            text_file.write(text_file_content)
+            html_file.write(html_file_content)
 
-        post_file.close()
-        text_file.close()
-        html_file.close()
+            post_file.close()
+            text_file.close()
+            html_file.close()
 
-        weasyprint.HTML(f'result_outputs/{campus_code}.html').write_pdf(f'result_outputs/{campus_code}.pdf')
+            weasyprint.HTML(f'result_outputs/{campus_code}.html').write_pdf(f'result_outputs/{campus_code} - {_campus_name}, {_campus_address}'.strip() + '.pdf')
 
-        os.makedirs(f"result_outputs_post_files/{campus_code}", exist_ok=True)
-        images = pdf2image.convert_from_path(f'result_outputs/{campus_code}.pdf')
-        for i in range(len(images)):
-            images[i].save(f'result_outputs_post_files/{campus_code}/Page {i+1}.jpg', "JPEG")
+            os.makedirs(f"result_outputs_post_files/{campus_code} - {_campus_name}, {_campus_address}".strip(), exist_ok=True)
+            images = pdf2image.convert_from_path(f'result_outputs/{campus_code} - {_campus_name}, {_campus_address}'.strip() + '.pdf')
+            for i in range(len(images)):
+                images[i].save(f'result_outputs_post_files/{campus_code} - {_campus_name}, {_campus_address}'.strip() + '/Page {i+1}.jpg', "JPEG")
 
         if mode == '1':
             conn = sqlite3.connect('campus.db')
@@ -269,7 +272,7 @@ def publish_result(_year, _campus_code, _campus_name="", _campus_address="", _mo
           f"Share the files so anyone with the link may access them.\n"
           f"Copy the PDF links of each PDFs.\n"
           f"Replace <<replace_me>> in fifth line of 'result_outputs_post_files/<<campus_code>>_post_file.txt with the link copied for corresponding files to PDF.\n"
-          f"Copy and paste whatever is in 'result_outputs_post_files/<<campus_code>>_post_file.txt' and post it in the facebook page after attaching photos in 'result_outputs_post_files/<<campus_code>>' folder of your current directory.")
+          f"Copy and paste whatever is in 'result_outputs_post_files/<<campus_code>>_post_file.txt' and post it in the facebook page after attaching photos in 'result_outputs_post_files/<<campus_code>> - <<campus_name>>, <<campus_address>>' folder of your current directory.")
 
     if mode != '1' and mode != '2':
         print(f"A summary of the report is written in summary.db in current directory.")
