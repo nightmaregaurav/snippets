@@ -1,0 +1,21 @@
+#!/bin/bash
+
+blank=$(echo " " | tr -d ' ' | tr -d '	' | tr -d '\n');
+
+port=$*;
+if [[ "$port" == "$blank" ]]; then
+	port=5000;
+fi;
+
+myarray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
+
+for i in "${myarray[@]}"
+do
+	if [[ $i == $port ]]; then
+    	port=$((port+1));
+	else
+		break;
+	fi;
+done;
+
+echo $port;

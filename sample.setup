@@ -1,0 +1,32 @@
+# to identify the server is subdomain or maindomain Default: NO
+ISMAINSERVER="NO";
+
+# username to use on DB or new main server user
+USERNAME="nightmare";
+
+# password to use on DB or new main server user
+PASSWORD="nightmare";
+
+# domain name to use fqdn for main server, one character for sub server
+DOMAIN="nightmare.crystalhost.com.np";
+
+# parent for DOMAIN to use for sub server, if DOMAIN is FQDN, ensure DOMAIN is subdomain of PARENT
+PARENT="crystalhost.com.np";
+
+# database name to use
+DB="nightmaregaurav";
+
+# port to run service on, make sure port is unused, use get-next-free-port command
+PORT=5000;
+
+# application folder name
+APPFOLDER="publish";
+
+# dotnet version
+DOTNET="net6.0";
+
+# description to use on service
+DESCRIPTION="Dev server service for Gaurav";
+
+# name of service, if not provided, will be generated automatically
+SERVICE="5000.LatestErp.service";

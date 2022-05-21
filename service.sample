@@ -1,0 +1,16 @@
+[Unit]
+Description={{DESC}}
+
+[Service]
+After=mysql.service
+WorkingDirectory={{ROOT}}/{{APPFOLDER}}
+ExecStart=/usr/bin/dotnet {{ROOT}}/{{APPFOLDER}}/Crystal.Erp.dll --urls=http://localhost:{{PORT}}/
+Restart=always
+RestartSec=2
+SyslogIdentifier={{SERVICENAME}}
+User={{USERNAME}}
+Environment=ASPNETCORE_ENVIRONMENT=development
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=true
+
+[Install]
+WantedBy=multi-user.target
