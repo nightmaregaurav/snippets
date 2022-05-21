@@ -3,7 +3,6 @@
 # Defaults
 blank=$(echo " " | tr -d ' ' | tr -d '	' | tr -d '\n');
 ISMAINSERVER="NO";
-INTERMEDIATEFOLDER="/home/crystal/publish";
 SOURCE="/home/crystal/src/erp/";
 PROJECTPATH="crystal.erp/Crystal.Erp/Crystal.Erp.csproj";
 SERVICESAMPLE="/home/crystal/service.sample";
@@ -116,10 +115,6 @@ if [[ "$DOTNET" == "$blank" ]]; then
 	echo "CONFIG ERR: DotNet version Indentifier DOTNET is required.";
 	exit 1;
 fi;
-if [[ "$INTERMEDIATEFOLDER" == "$blank" ]]; then
-	echo "CONFIG ERR: Build intermediate folder path Indentifier INTERMEDIATEFOLDER is required.";
-	exit 1;
-fi;
 if [[ "$SOURCE" == "$blank" ]]; then
 	echo "CONFIG ERR: Source folder path Indentifier SOURCE is required.";
 	exit 1;
@@ -158,7 +153,6 @@ echo "APPFOLDER => $APPFOLDER";
 echo "DOTNET => $DOTNET";
 echo "SERVICE => $SERVICE";
 echo "ROOT => $ROOT";
-echo "INTERMEDIATEFOLDER => $INTERMEDIATEFOLDER";
 echo "SOURCE => $SOURCE";
 echo "PROJECTPATH => $PROJECTPATH";
 
@@ -239,13 +233,14 @@ if [[ "$LAUNCHERP" == "YES" || "$UPGRADEERP" == "YES" ]]; then
 	echo "Building the solution...";
 	echo "************************************";
 	cd "$SOURCE";
-	dotnet publish "$PROJECTPATH" -c release -r linux-x64 -f $DOTNET -o "$INTERMEDIATEFOLDER" --nologo;
+	rm -rf /tmp/setup-erp-publish 2>/dev/null || :;
+	dotnet publish "$PROJECTPATH" -c release -r linux-x64 -f $DOTNET -o /tmp/setup-erp-publish --nologo;
 
 	echo "************************************";
 	echo "Moving published system to target...";
 	echo "************************************";
 	cd "$ROOT";
-	mv "$INTERMEDIATEFOLDER" "$APPFOLDER";
+	mv "/tmp/setup-erp-publish" "$APPFOLDER";
 
 	echo "************************************";
 	echo "Setting up configuration files...";
