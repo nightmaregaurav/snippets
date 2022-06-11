@@ -1,60 +1,57 @@
-# Additional Settings
+################################################################################
+
 # pip install dj-database-url
 # pip install python-dotenv
 # pip install whitenoise
-import os  # noqa: E402
-import sys  # noqa: E402
+# pip install django-cors-headers
+# pip install djangorestframework
+
 import dj_database_url  # noqa: E402
-import json  # noqa: E402
 
-from django.contrib import messages  # noqa: E402
-from urllib import parse  # noqa: E402
 from dotenv import load_dotenv  # noqa: E402
+from urllib import parse  # noqa: E402
+from django.contrib import messages  # noqa: E402
+
+#  autoload the env vars in .env file
+load_dotenv(BASE_DIR / '.env')
 
 
-def get_bool_or_default_env_var(name: str, default: bool):
-    str_value: str = os.getenv(name)
-
-    if str_value is None:
+#  function to get environment variables in proper format
+def getenv(name: str, default=None):
+    import os  # noqa: E402
+    value: str = os.getenv(name)
+    if value is None:
         return default
-
-    str_value = str_value.lower()
-
-    if str_value == "true":
+    if value.lower() == "true":
         return True
-    if str_value == "false":
+    if value.lower() == "false":
         return False
+    if value.isdecimal():
+        return int(value)
     return default
 
 
-# autoload the env vars in .env file
-load_dotenv(BASE_DIR / '.env')
-
-# add site name to env variable first
-SITE_NAME = os.getenv('SITE_NAME')
-
-# noinspection PyRedeclaration
-DEBUG = get_bool_or_default_env_var("DJANGO_DEBUG", True)
+SITE_NAME = getenv('SITE_NAME', "http://127.0.0.1")
+DEBUG = getenv("DJANGO_DEBUG", DEBUG)
+SECRET_KEY = getenv('SECRET_KEY', SECRET_KEY)
 if not DEBUG:
-    # add secret key to env variable first
-    SECRET_KEY = os.getenv('SECRET_KEY')
-    ALLOWED_HOSTS = [parse.urlsplit(SITE_NAME).hostname, *os.getenv('ALLOWED_HOSTS').split()]
-    SESSION_COOKIE_SECURE = get_bool_or_default_env_var("SESSION_COOKIE_SECURE", True)
-    SECURE_BROWSER_XSS_FILTER = get_bool_or_default_env_var("SECURE_BROWSER_XSS_FILTER", True)
-    # noinspection SpellCheckingInspection
-    SECURE_CONTENT_TYPE_NOSNIFF = get_bool_or_default_env_var("SECURE_CONTENT_TYPE_NOSNIFF", True)
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = get_bool_or_default_env_var("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
-    SECURE_HSTS_SECONDS = os.getenv('SECURE_HSTS_SECONDS') or 31536000
-    SECURE_REDIRECT_EXEMPT = [*os.getenv('SECURE_REDIRECT_EXEMPT').split()]
-    SECURE_SSL_REDIRECT = get_bool_or_default_env_var("SECURE_SSL_REDIRECT", True)
-    SECURE_PROXY_SSL_HEADER = os.getenv('SECURE_PROXY_SSL_HEADER').split() or ('HTTP_X_FORWARDED_PROTO', 'https')
+    #  noinspection SpellCheckingInspection
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_REDIRECT_EXEMPT = [""]
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    ALLOWED_HOSTS = [parse.urlsplit(SITE_NAME).hostname, ]
+    CORS_ALLOWED_ORIGINS = [*ALLOWED_HOSTS]
 else:
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = True
     ALLOWED_HOSTS = ['*', ]
 
-# root template dirs
-TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates', ]
-
-# change default tags for message passed to page
+#  change default class tags for message passed to page
 MESSAGE_TAGS = {
     messages.DEBUG: 'dark debug',
     messages.INFO: 'info',
@@ -63,72 +60,88 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger error',
 }
 
-# default dir to store collected static files
-STATICFILES_DIRS = [BASE_DIR / 'static_files']
-
-# dirs to store root static files
-STATIC_ROOT = BASE_DIR / 'static'
-
-# url path to serve media files
-MEDIA_URL = '/media/'
-
-# default dir to store uploaded media
-MEDIA_ROOT = BASE_DIR / 'media'
-
-# url that users will be redirected to after login
-LOGIN_REDIRECT_URL = '/'
-
-# cache storage setup, DatabaseCache by default
+#  cache storage setup, DatabaseCache by default
 CACHES = {
     'default': {
-        'BACKEND': os.getenv('CACHE_BACKEND') or 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': os.getenv('CACHE_LOCATION') or 'cache_table',
-        'TIMEOUT': os.getenv('CACHE_TIMEOUT') or 500,
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+        'TIMEOUT': 500,
         'OPTIONS': {
-            'MAX_ENTRIES': os.getenv('CACHE_MAX_ENTRIES') or 10,
-            'CULL_FREQUENCY': os.getenv('CACHE_CULL_FREQUENCY') or 1,
+            'MAX_ENTRIES': 10,
+            'CULL_FREQUENCY': 1,
         },
     }
 }
 
-# DataFlair caching middlewares
 MIDDLEWARE += [
+    #  data flair caching middlewares
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+
+    #  cross-origin resource sharing header setup middleware
+    'corsheaders.middleware.CorsMiddleware',
+
+    #  whitenoise middleware for static files serving
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-# configuration to manage email service
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND') or 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = get_bool_or_default_env_var("EMAIL_USE_TLS", True)
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-
-#  Configuration for serving static files storage using whitenoise by default
-STATICFILES_STORAGE = os.getenv('STATICFILES_STORAGE') or 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# database configuration using sqlite by default
-DATABASES['default'] = dj_database_url.config(default="sqlite:///database.db", conn_max_age=600, ssl_require=False)
-
-# auth backends
+INSTALLED_APPS += [
+    'rest_framework',
+    'corsheaders',
+]
 AUTHENTICATION_BACKENDS = [
     # Needed to log in by username in Django admin, regardless of any other backend
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# template context processors
-TEMPLATES[0]['OPTIONS']['context_processors'] += [
-    'Core.modules.context_processors.urls',
-    'Core.modules.context_processors.site_setting',
-]
+#  root template dirs
+TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates', ]
 
-# noinspection SpellCheckingInspection
-INSTALLED_APPS += [
-    'Core.apps.CoreConfig',
-]
+#  template context processors
+TEMPLATES[0]['OPTIONS']['context_processors'] += []
 
-# middlewares
-MIDDLEWARE += [
-]
+#  Configuration for serving static files storage using whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#  extra dirs to store static files
+STATICFILES_DIRS = []
+
+#  url path to serve static files from
+STATIC_URL = "/static/"
+
+#  default dir to store collected static files
+STATIC_ROOT = BASE_DIR / 'static'
+
+#  default dir to store uploaded media
+MEDIA_ROOT = BASE_DIR / 'media'
+
+#  url path to serve media files
+MEDIA_URL = '/media/'
+
+#  configuration to manage email service
+EMAIL_BACKEND = getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_USE_TLS = getenv("EMAIL_USE_TLS", True)
+EMAIL_HOST = getenv('EMAIL_HOST')
+EMAIL_PORT = getenv('EMAIL_PORT')
+EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
+
+
+ADMIN_URL = getenv('ADMIN_URL', 'administration')
+LOGIN_REDIRECT_URL = '/'
+DATABASES['default'] = dj_database_url.config(default="sqlite:///database.db", conn_max_age=600, ssl_require=False)
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    ],
+}
+
+JWT_DEFAULTS = {
+    "Algorithm": getenv('JWT_ALGORITHM', 'HS256'),
+    "Secret": getenv('JWT_SECRET', SECRET_KEY),
+    "Issuer": getenv('JWT_ISSUER', SITE_NAME),
+    "MaxLife": getenv('JWT_MAX_LIFE', 90000),
+}
