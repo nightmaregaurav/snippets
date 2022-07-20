@@ -1,18 +1,22 @@
+# If not running interactively, don't do anything
+case $- in
+	*i*);;
+		*) return;;
+esac
+
+# If started from sshd, make sure profile is sourced
+if [[ -n "$SSH_CONNECTION" ]] && [[ "$PATH" != *:/usr/bin* ]]; then
+    . /etc/profile
+fi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	 . /etc/bashrc
 fi
 
-# Enable bash programmable completion features in interactive shells
-if [ -f /usr/share/bash-completion/bash_completion ]; then
-	. /usr/share/bash-completion/bash_completion
-elif [ -f /etc/bash_completion ]; then
-	. /etc/bash_completion
-fi
-
 # Expand the history size
 export HISTFILESIZE=10000
-export HISTSIZE=500
+export HISTSIZE=1000
 
 # Don't put duplicate lines in the history and do not add lines that start with a space
 export HISTCONTROL=erasedups:ignoredups:ignorespace
@@ -37,9 +41,13 @@ if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
 export LS_COLORS='no=00:fi=00:di=00;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:*.xml=00;31:'
-#export GREP_OPTIONS='--color=auto' #deprecated
-alias grep="/usr/bin/grep $GREP_OPTIONS"
-unset GREP_OPTIONS
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias zgrep='zgrep --color=auto'
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Color for manpages in less makes manpages a little easier to read
 export LESS_TERMCAP_mb=$'\E[01;31m'
@@ -56,9 +64,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # Edit this .bashrc file
 alias ebrc='edit ~/.bashrc'
-
-# Show help for this .bashrc file
-alias hlp='less ~/.bashrc_help'
 
 # alias to show the date
 alias da='date "+%Y-%m-%d %A %T %Z"'
@@ -81,6 +86,11 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
 # alias chmod commands
 alias 000='chmod -R 000'
 alias 644='chmod -R 644'
@@ -92,6 +102,33 @@ alias 777='chmod -R 777'
 
 # Show open ports
 alias openports='netstat -nape --inet'
+
+# Get free port after a port
+function freeportafter
+{
+	blank=$(echo " " | tr -d ' ' | tr -d '	' | tr -d '\n');
+	port=$*;
+
+	if [[ "$port" == "$blank" ]]; then
+		port=5000;
+	fi;
+
+	myarray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
+
+	for i in "${myarray[@]}"
+	do
+		if [[ $i == $port ]]; then
+	    	port=$((port+1));
+		else
+			break;
+		fi;
+	done;
+
+	echo $port;
+}
+
+# Get public IP address
+alias publicip='curl -s ipinfo.io/ip'
 
 # Alias's for archives
 alias mktar='tar -cvf'
@@ -172,45 +209,36 @@ function __setprompt
 	fi
 
 	# Date
-	PS1+="\[${WHITE}\](\[${LIGHTCYAN}\]\$(date +%a) $(date +%b-'%-m')" # Date
+	PS1+="\[${WHITE}\](\[${LIGHTCYAN}\]$(date +%a) $(date +%b-'%-m')" # Date
 	PS1+="${LIGHTBLUE} $(date +'%-I':%M%P)\[${WHITE}\])-" # Time
 
 	# CPU
-	PS1+="(\[${LIGHTMAGENTA}\]CPU $(cpu)%"
-
-	# Jobs
-	PS1+="\[${WHITE}\]:\[${LIGHTMAGENTA}\]\j"
-
-	# Network Connections (for a server - comment out for non-server)
-	PS1+="\[${WHITE}\]:\[${LIGHTMAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
-
-	PS1+="\[${WHITE}\])-"
+    	PS1+="(\[${LIGHTMAGENTA}\]CPU $(cpu)%\[${WHITE}\])-"
 
 	# hostname
 	PS1+="(\[${LIGHTWHITE}\]\h"
 
-
 	# Current directory
-	PS1+="\[${WHITE}\]:\[${YELLOW}\]\w\[${WHITE}\])-"
+	PS1+="\[${WHITE}\]:\[${YELLOW}\]\w\[${WHITE}\])"
 
-	# Total size of files in current directory
-	PS1+="(\[${LIGHTRED}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${WHITE}\]:"
-
-	# Number of files
-	PS1+="\[${LIGHTRED}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${WHITE}\])"
+	# Current Global IP
+	IP=$(publicip)
+	if [[ "$IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    	PS1+="-(\[${LIGHTRED}\]$IP\[${WHITE}\])"
+	fi
 
 	# Skip to the next line
 	PS1+="\n"
 
 	if [[ $EUID -ne 0 ]]; then
-		PS1+="\[${WHITE}\](\[${LIGHTGREEN}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*' | colrm 1 2)\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
+		PS1+="\[${WHITE}\](\[${LIGHTGREEN}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*')\[${GREEN}\] >>>\[${NOCOLOR}\] " # Normal user
 	else
-		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*' | colrm 1 2)\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
+		PS1+="\[${WHITE}\](\[${LIGHTRED}\]\u\[${WHITE}\]) \[${YELLOW}\]$(git branch 2> /dev/null | grep '^*')\[${RED}\] >>>\[${NOCOLOR}\] " # Root user
 	fi
 
 	# Add python virtual env name if available
 	if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT-}" ] ; then
-	        PS1="`basename \"$VIRTUAL_ENV\"` ~ $PS1"
+        PS1="`basename \"$VIRTUAL_ENV\"` ~ $PS1"
 	fi
 
 	# PS2 is used to continue a command using the \ character
@@ -222,4 +250,19 @@ function __setprompt
 	# PS4 is used for tracing a script in debug mode
 	PS4="\[${GREEN}\]+\[${NOCOLOR}\] "
 }
+
 PROMPT_COMMAND='__setprompt'
+
+# Source bashalias if available
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# Enable bash programmable completion features in interactive shells
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi

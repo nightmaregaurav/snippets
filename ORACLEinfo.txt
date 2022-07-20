@@ -35,10 +35,12 @@ Connection strings will be given in top of: docker logs <container_name>
 To resume container after stopping or shutdown: docker start <container_name>
 
 To get terminal: docker exec -it --user=oracle <container_name> bash
-To automate it: (After this, just type <container_name>-shell in terminal after starting container to get terminal)
-     sudo echo "docker start <container_name> >> /dev/null && docker exec -it --user=oracle <container_name> bash" >> <container_name>-shell
-     sudo mv <container_name>-shell /bin/
-     sudo chmod 774 /bin/<container_name>-shell
+To automate it: (After this, just type <container_name>-linux-shell in terminal after starting container to get terminal)
+     echo "#!/bin/bash" >> <container_name>-linux-shell
+     echo "" >> <container_name>-linux-shell
+     echo "docker start <container_name> >> /dev/null && docker exec -it --user=oracle <container_name> bash" >> <container_name>-linux-shell
+     sudo mv <container_name>-linux-shell /bin/
+     sudo chmod 774 /bin/<container_name>-linux-shell
 
 
 Initially there is no root password. Set ORACLE PASSWORD FOR SYS, SYSTEM and PDBADMIN accounts by: (Won't set for /)
@@ -55,11 +57,19 @@ To setup rlwrap for sqlplus commands:
                exit (To switch back to normal user)
                echo "alias sqlplus='rlwrap sqlplus'" >> .bashrc
 
-To get sqlplus console: docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; sqlplus / as sysdba;"
+To get sqlplus console as sysdba: docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; sqlplus / as sysdba;"
+To automate it: (After this, just type <container_name>-default in terminal after starting container to get terminal)
+     echo '#!/bin/bash' >> <container_name>-default
+     echo '' >> <container_name>-default
+     echo 'docker start <container_name> >> /dev/null && docker exec -it --user=oracle <container_name> bash -c "sleep 0.0001; sqlplus / as sysdba;"' >> <container_name>-default
+     sudo mv <container_name>-default /bin/
+     sudo chmod 774 /bin/<container_name>-default
+
 
 To enter database sql shell from inside docker terminal: sqlplus / as sysdba
 To enter pluggable database sql shell from inside docker terminal: sqlplus sys@XEPDB1 as sysdba
 
 
-Pluggable database: <container_name>/XEPDB1
+Pluggable database(for XE find info in log for others): <container_name>/XEPDB1
 Multitenant container database: <container_name>
+Oracle Enterprise Manager: https://localhost:5500/em
