@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Burp Suite
-Exec=burpsuite
-Icon=/opt/burp/burp-suite-icon.png
-Terminal=false
-Type=Application
-Categories=Utility;Application;

@@ -1,5 +1,0 @@
-move jsp to a folder (if simple)
-move jsp in place of HTML under servlet dir structure (if complex)
-copy root project folder or war file to appropriate folder (ex: /var/lib/tomcat9/webapps/)
-start tomcat server
-visit localhost:8080/<root-folder-name>/TestJsp.jsp

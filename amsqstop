@@ -1,1 +1,0 @@
-pkexec sudo sh -c 'systemctl stop mysqld && apachectl stop'
