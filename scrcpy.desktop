@@ -1,31 +1,42 @@
-[Desktop Entry]
-Type=Application
-Exec=scrcpy -w %u
-Icon=smartphoneconnected
-StartupNotify=true
-Terminal=false
-Categories=Utility;
-Name=Screen Mirror (scrcpy)
-Comment=View Android Screen On Linux
-Hidden=false
-Actions=borderless;nodisplay;nodisplayborderless;view;viewborderless;
-
 [Desktop Action borderless]
-Name=With borderless window
 Exec=scrcpy --window-borderless -w %u
+Name=With borderless window
 
 [Desktop Action nodisplay]
-Name=With turned off android's display
 Exec=scrcpy -S -w %u
+Name=With turned off android's display
 
 [Desktop Action nodisplayborderless]
-Name=With turned off android's display and borderless wondow
 Exec=scrcpy -S --window-borderless -w %u
+Name=With turned off android's display and borderless wondow
 
 [Desktop Action view]
-Name=With view only mode
 Exec=scrcpy -n %u
+Name=With view only mode
 
 [Desktop Action viewborderless]
-Name=With view only mode and borderless wondow
 Exec=scrcpy -n --window-borderless %u
+Name=With view only mode and borderless wondow
+
+[Desktop Entry]
+Actions=borderless;nodisplay;nodisplayborderless;view;viewborderless;
+Categories=Utility;
+Comment[en_US]=View Android Screen On Linux
+Comment=View Android Screen On Linux
+Exec=scrcpy -w %u
+GenericName[en_US]=
+GenericName=
+Hidden=false
+Icon=scrcpy
+MimeType=
+Name[en_US]=Screen Mirror (scrcpy)
+Name=Screen Mirror (scrcpy)
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
