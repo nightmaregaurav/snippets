@@ -52,8 +52,8 @@ mkdir /etc/phpmyadmin
 cp /usr/share/webapps/phpMyAdmin/config.sample.inc.php /usr/share/webapps/phpMyAdmin/config.inc.php
 
 Edit /usr/share/webapps/phpMyAdmin/config.inc.php and make these changes:
-$cfg[‘TempDir’] = ‘/var/lib/phpmyadmin/tmp’;
-$cfg[‘blowfish_secret’] = ‘{random strings}’;
+$cfg["TempDir"] = "/var/lib/phpmyadmin/tmp";
+$cfg[‘blowfish_secret’] = "replace with 32bit randomstrings";
 
 Edit /etc/php/php.ini file and uncomment the following:
 extension=mysqli
