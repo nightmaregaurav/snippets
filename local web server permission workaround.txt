@@ -1,4 +1,4 @@
-serveruser=$(ps -ef | egrep '(httpd|apache2|apache)' | grep -v `whoami` | grep -v root | head -n1 | awk '{print $1}')
+serveruser=$(/bin/ps -ef | egrep '(httpd|apache2|apache)' | grep -v `whoami` | grep -v root | head -n1 | awk '{print $1}')
 
 # Debian
 sudo addgroup serverusers

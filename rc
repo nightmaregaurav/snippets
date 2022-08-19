@@ -1,9 +1,11 @@
-if [[ "$0" == *zsh ]]; then
+if [[ $BASH_VERSION == "" ]]; then
   isbash="false"
   iszsh="true"
-else
+elif [[ $ZSH_VERSION == "" ]]; then
   isbash="true"
   iszsh="false"
+else
+  return
 fi;
 
 # If not running interactively, don't do anything
@@ -48,6 +50,7 @@ export HISTSIZE=2000
 
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS
 [[ $isbash == "true" ]] && shopt -s checkwinsize
+[[ $isbash == "true" ]] && shopt -s expand_aliases
 
 # Makes less more friendly for non-text input files
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -106,7 +109,7 @@ alias da='date "+%Y-%m-%d %A %T %Z"'
 alias openports='netstat -nape --inet'
 
 # Get public IP address
-alias publicip='curl --max-time 0.5 -s ipinfo.io/ip'
+alias publicip='echo $EXTIP'
 
 # Get CPU usage
 alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
@@ -153,6 +156,29 @@ TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
+
+# zip extract function
+extract_zip()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via extract_zip()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
 
 # Get free port after a port
 function freeportafter
@@ -344,19 +370,28 @@ fi
 
 # zsh specific
 if [[ $iszsh == "true" ]]; then
-  setopt hist_append
+  setopt hist_append            # Immediately append history instead of overwriting
+  setopt appendhistory          # Immediately append history instead of overwriting
   setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
   setopt hist_ignore_dups       # ignore duplicated commands history list
+  setopt histignorealldups      # If a new command is a duplicate, remove the older one
+  setopt inc_append_history     # save commands are added to the history immediately, otherwise only when shell exits.
   setopt hist_ignore_space      # ignore commands that start with space
+  setopt histignorespace        # Don't save commands that start with space
   setopt hist_verify            # show command with history expansion to user before running it
   setopt autocd                 # change directory just by typing its name
-  #setopt correct               # auto correct mistakes
+  setopt correct                # auto correct mistakes
   setopt interactivecomments    # allow comments in interactive mode
   setopt magicequalsubst        # enable filename expansion for arguments of the form ‘anything=expression’
   setopt nonomatch              # hide error message if there is no match for the pattern
   setopt notify                 # report the status of background jobs immediately
   setopt numericglobsort        # sort filenames numerically when it makes sense
   setopt promptsubst            # enable command substitution in prompt
+  setopt extendedglob           # Extended globbing. Allows using regular expressions with *
+  setopt nocaseglob             # Case insensitive globbing
+  setopt rcexpandparam          # Array expension with parameters
+  setopt nocheckjobs            # Don't warn about running processes when exiting
+  setopt nobeep                 # No beep
 
   # Enable completion features
   autoload -Uz compinit
@@ -366,7 +401,6 @@ if [[ $iszsh == "true" ]]; then
   zstyle ':completion:*' completer _expand _complete
   zstyle ':completion:*' format 'Completing %d'
   zstyle ':completion:*' group-name ''
-  zstyle ':completion:*' list-colors ''
   zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
   zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
   zstyle ':completion:*' rehash true
@@ -374,6 +408,11 @@ if [[ $iszsh == "true" ]]; then
   zstyle ':completion:*' use-compctl false
   zstyle ':completion:*' verbose true
   zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+  zstyle ':completion:*' accept-exact '*(N)'
+  zstyle ':completion:*' use-cache on
+  zstyle ':completion:*' cache-path ~/.zsh/cache
+  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+  zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 
   # Configure key keybindings
   bindkey -e                                        # emacs key bindings
@@ -385,13 +424,14 @@ if [[ $iszsh == "true" ]]; then
   bindkey '^[[1;5D' backward-word                   # ctrl + <-
   bindkey '^[[5~' beginning-of-buffer-or-history    # page up
   bindkey '^[[6~' end-of-buffer-or-history          # page down
+  bindkey '^[[7~' beginning-of-line                 # home
   bindkey '^[[H' beginning-of-line                  # home
+  bindkey '^[[8~' end-of-line                       # end
   bindkey '^[[F' end-of-line                        # end
   bindkey '^[[Z' undo                               # shift + tab undo last action
-
-  # styles
-  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-  zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+  bindkey '^[[2~' overwrite-mode                    # insert
+  bindkey '^[[C'  forward-char                      # right
+  bindkey '^[[D'  backward-char                     # left
 
   # Enable syntax-highlighting
   if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
@@ -446,9 +486,18 @@ if [[ $iszsh == "true" ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#999'
   fi
 
+  # Enable history substring search
+  if [ -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ]; then
+    . /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+  fi
+
   # Enable command-not-found if installed
   if [ -f /etc/zsh_command_not_found ]; then
     . /etc/zsh_command_not_found
+    export PKGFILE_PROMPT_INSTALL_MISSING=1
+  elif [[ -r /usr/share/zsh/functions/command-not-found.zsh ]]; then
+    . /usr/share/zsh/functions/command-not-found.zsh
+    export PKGFILE_PROMPT_INSTALL_MISSING=1
   fi
 fi
 
