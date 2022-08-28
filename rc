@@ -45,6 +45,7 @@ WORDCHARS=${WORDCHARS//\/}
 PROMPT_EOL_MARK=""
 
 # Expand the history size
+export HISTFILE=~/.history
 export HISTFILESIZE=10000
 export HISTSIZE=2000
 
@@ -370,12 +371,11 @@ fi
 
 # zsh specific
 if [[ $iszsh == "true" ]]; then
-  setopt hist_append            # Immediately append history instead of overwriting
   setopt appendhistory          # Immediately append history instead of overwriting
+  setopt hist_append            # Immediately append history instead of overwriting
   setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
   setopt hist_ignore_dups       # ignore duplicated commands history list
   setopt histignorealldups      # If a new command is a duplicate, remove the older one
-  setopt inc_append_history     # save commands are added to the history immediately, otherwise only when shell exits.
   setopt hist_ignore_space      # ignore commands that start with space
   setopt histignorespace        # Don't save commands that start with space
   setopt hist_verify            # show command with history expansion to user before running it
@@ -503,3 +503,12 @@ fi
 
 PROMPT_COMMAND='__setprompt'
 precmd_functions=(__setprompt)
+
+export WORKON_HOME="$HOME/.virtualenvs"
+export PROJECT_HOME="$HOME/Projects"
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  . /usr/local/bin/virtualenvwrapper.sh
+fi
+if [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
+  . ~/.local/bin/virtualenvwrapper.sh
+fi
