@@ -46,14 +46,14 @@ Edit /etc/httpd/conf/httpd.conf and write at last:
 # phpMyAdmin configuration
 Include conf/extra/phpmyadmin.conf
 
-mkdir -p /var/lib/phpmyadmin/tmp
-chown -R http:http /var/lib/phpmyadmin/tmp
-mkdir /etc/phpmyadmin
-cp /usr/share/webapps/phpMyAdmin/config.sample.inc.php /usr/share/webapps/phpMyAdmin/config.inc.php
+sudo mkdir -p /var/lib/phpmyadmin/tmp
+sudo chown -R http:http /var/lib/phpmyadmin/tmp
+sudo mkdir /etc/phpmyadmin
+sudo cp /usr/share/webapps/phpMyAdmin/config.sample.inc.php /usr/share/webapps/phpMyAdmin/config.inc.php
 
-Edit /usr/share/webapps/phpMyAdmin/config.inc.php and make these changes:
-$cfg["TempDir"] = "/var/lib/phpmyadmin/tmp";
-$cfg[‘blowfish_secret’] = "replace with 32bit randomstrings";
+Edit /usr/share/webapps/phpMyAdmin/config.inc.php and add/update these:
+$cfg['TempDir'] = '/var/lib/phpmyadmin/tmp';
+$cfg['blowfish_secret'] = 'replace with 32bit randomstrings';
 
 Edit /etc/php/php.ini file and uncomment the following:
 extension=mysqli
