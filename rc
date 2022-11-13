@@ -1,3 +1,23 @@
+# needed for later use
+rm -f ~/.extip
+touch ~/.extip
+
+# function to set ext ip in a file
+function set_public_ip_to_extip_file() {
+  local addr=$( timeout 3 dig +short myip.opendns.com @resolver1.opendns.com || \
+    timeout 3 curl -s http://whatismyip.akamai.com/ || \
+    timeout 3 curl -s http://ifconfig.io/ip || \
+    timeout 3 curl -s http://ipecho.net/plain || \
+    timeout 3 curl -s http://ident.me/
+  )
+  [ $? -ne 0 ] && addr="0.0.0.0"
+  echo $addr > ~/.extip
+}
+(set_public_ip_to_extip_file &) > /dev/null 2>&1
+
+# Get public IP address
+alias publicip='cat ~/.extip'
+
 if [[ $BASH_VERSION == "" ]]; then
   isbash="false"
   iszsh="true"
@@ -106,9 +126,6 @@ alias da='date "+%Y-%m-%d %A %T %Z"'
 # Show open ports
 alias openports='netstat -nape --inet'
 
-# Get public IP address
-alias publicip='echo $EXTIP'
-
 # To use sudo on aliases
 alias sudo='sudo '
 
@@ -210,12 +227,14 @@ function freeportafter
   echo $port;
 }
 
-
 #######################################################
 #          Set the amazing command prompt             #
 #######################################################
 function __setprompt
 {
+  # refresh IP
+  (set_public_ip_to_extip_file &) > /dev/null 2>&1
+
   local LAST_COMMAND=$? # Must come first!
   local NEWLINE=$'\n'
 
