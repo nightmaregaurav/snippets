@@ -1,15 +1,16 @@
-serveruser=$(/bin/ps -ef | egrep '(httpd|apache2|apache)' | grep -v `whoami` | grep -v root | head -n1 | awk '{print $1}')
+serveruser=$(/bin/ps -ef | grep -E '(httpd|apache2|apache)' | grep -v `whoami` | grep -v root | head -n1 | awk '{print $1}')
+sudo mkdir -p /srv/http
 
 # Debian
 sudo addgroup serverusers
 sudo adduser $USER serverusers
 sudo adduser $serveruser serverusers
-sudo chown $USER:$serveruser -R htdocs
-sudo chmod u=rwX,g=rwX,o=rX -R htdocs
+sudo chown $USER:$serveruser -R /srv/http
+sudo chmod u=rwX,g=rwX,o=rX -R /srv/http
 
 # Arch
 sudo groupadd serverusers
 sudo usermod -aG serverusers $USER
 sudo usermod -aG serverusers $serveruser
-sudo chown $USER:$serveruser -R htdocs
-sudo chmod u=rwX,g=rwX,o=rX -R htdocs
+sudo chown $USER:$serveruser -R /srv/http
+sudo chmod u=rwX,g=rwX,o=rX -R /srv/http
