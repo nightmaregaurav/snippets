@@ -1,10 +1,29 @@
+mkdir -p $HOME/.pki/nssdb
+certutil -d $HOME/.pki/nssdb -N
+
+
+dotnet dev-certs https --clean
 sudo dotnet dev-certs https --clean
-sudo dotnet dev-certs https -v
+
+dotnet dev-certs https
 sudo dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
-sudo openssl pkcs12 -in ~/.dotnet/corefx/cryptography/x509stores/my/<>.pfx -nokeys -out ~/localhost.crt -nodes
-sudo mv ~/localhost.crt /usr/local/share/ca-certificates/aspnet/localhost.crt
+
 sudo certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
 sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/https.crt
-sudo certutil -d sql:$HOME/.pki/nssdb -A -t "P,," -n localhost -i /usr/local/share/ca-certificates/aspnet/localhost.crt
-sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localhost -i /usr/local/share/ca-certificates/aspnet/localhost.crt
+
+firefox_lib_folder=/usr/lib/firefox
+cat <<EOF | sudo tee $firefox_lib_folder/distribution/policies.json
+{
+    "policies": {
+        "Certificates": {
+            "Install": [
+                "/usr/local/share/ca-certificates/aspnet/https.crt"
+            ]
+        }
+    }
+}
+EOF
+
+# At last
+sudo update-ca-trust
 sudo trust extract-compat
