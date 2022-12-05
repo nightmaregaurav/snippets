@@ -1,0 +1,20 @@
+/*autohide topbar*/
+
+#navigator-toolbox {
+  max-height: 0;
+  overflow: hidden;
+  transition: ease all 5s;
+}
+
+#navigator-toolbox:hover
+{
+  max-height: 100vh;
+  animation: 0s pop-in;
+  animation-fill-mode: both;
+  animation-delay: 1s;
+}
+
+@keyframes pop-in {
+  from {overflow: hidden}
+  to {overflow: unset}
+}

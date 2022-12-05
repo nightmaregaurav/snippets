@@ -1,7 +1,6 @@
 mkdir -p $HOME/.pki/nssdb
 certutil -d $HOME/.pki/nssdb -N
 
-
 dotnet dev-certs https --clean
 sudo dotnet dev-certs https --clean
 

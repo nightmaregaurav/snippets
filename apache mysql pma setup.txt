@@ -1,4 +1,4 @@
-install mariadb mariadb-client using package manager
+install mariadb mariadb-clients using package manager
 
 sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 systemctl enable --now mariadb.service

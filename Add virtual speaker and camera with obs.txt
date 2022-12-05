@@ -1,0 +1,20 @@
+Add following lines in /etc/pulse/default.pa:
+# Add a virtual speaker
+load-module module-null-sink sink_name=virtual_sink sink_properties="device.description='Virtual Speaker'"
+
+OBS>Settings>Advanced>Monitoring Device = Monitor of Virtual Speaker
+OBS>Sources>Add>Browser:
+	Name = Virtual Camera
+	URL = URL
+	Width = 1920
+	Height = 1080
+	Control audio via OBS = true
+	FPS = 60
+	Shutdown source when not visible = true
+	Refresh browser when scene becomes active = true
+	Page Permission = No access to OBS
+OBS>Sources>Virtual Camera>Lock
+OBS>Audio Mixer>Options>Vertical Layout
+OBS>Audio Mixer>Settings:
+	Volume = 100 (All)
+	Audio Monitoring = Monitor and Output
