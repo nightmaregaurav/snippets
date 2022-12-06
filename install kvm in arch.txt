@@ -1,0 +1,14 @@
+sudo pacman -S virt-manager qemu vde2 ebtables dnsmasq bridge-utils openbsd-netcat
+sudo systemctl enable libvirtd.service
+sudo systemctl start libvirtd.service
+
+Open /etc/libvirt/libvirtd.conf
+Change term “unix_sock_group” to libvirt -> unix_sock_group = "libvirt"
+Change term “unix_sock_rw_perms 0770 -> unix_sock_rw_perms = "0770"
+
+sudo usermod -a -G libvirt $(whoami)
+newgrp libvirt
+sudo systemctl restart libvirtd.service
+sudo modprobe -r kvm_intel
+sudo modprobe kvm_intel nested=1
+echo "options kvm-intel nested=1" | sudo tee /etc/modprobe.d/kvm-intel.conf
