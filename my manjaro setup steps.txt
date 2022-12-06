@@ -81,7 +81,6 @@ Add extensions:
 		hotkey Super + R
 	AppIndicator and KStatus....  -> On
 	Dash to Dock -> Install and on and setup
-	Launch new instance -> on
 	Pmac update indicator -> on
 	Removable drive menu -> on
 	User theme -> on

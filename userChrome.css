@@ -1,7 +1,7 @@
 /*autohide topbar*/
 
 #navigator-toolbox {
-  max-height: 0;
+  max-height: 5px;
   overflow: hidden;
   transition: ease all 5s;
 }
