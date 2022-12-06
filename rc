@@ -28,21 +28,10 @@ else
   return
 fi;
 
-# Don't put duplicate lines in the history and do not add lines that start with a space
-export HISTCONTROL=erasedups:ignorespace
-
-# Causes bash to append to history instead of overwriting it so if you start a new terminal, you have old session history
-[[ $isbash == "true" ]] && shopt -s histappend
-PROMPT_COMMAND='history -a'
-
-# Don't consider certain characters part of the word
-WORDCHARS=${WORDCHARS//\/}
-
 # hide EOL sign ('%')
 PROMPT_EOL_MARK=""
 
 # Expand the history size
-export HISTFILE=~/.history
 export HISTFILESIZE=10000
 export HISTSIZE=2000
 
