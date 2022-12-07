@@ -123,6 +123,9 @@ Add extensions:
 		Hide Appmenu Application icon: on
 		Reduce top bar items spacing: on
 		Top bar win buttons theme McMojave
+	Lock keys:
+		Indicator style: Show/Hide
+		NOtifications: OSD
 
 add virtual sink and camera
 flameshot config
