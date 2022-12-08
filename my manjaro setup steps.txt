@@ -126,6 +126,13 @@ Add extensions:
 	Lock keys:
 		Indicator style: Show/Hide
 		NOtifications: OSD
+	Mute/Unmute: on
+	Systemd Manager:
+		Add Mysql Httpd and other required services
+		Change mode to systemctl preferebly
+	Transparent Window Moving: on
+	Alphabetical App grid: on
+	Wifi Qr Code: on
 
 add virtual sink and camera
 flameshot config
@@ -154,7 +161,6 @@ Download icons from https://www.pling.com/p/1305429/ and install to .icons
 Download icons from https://www.pling.com/p/1355701/ and install to .themes
 Set theme and icons from in user theme extension and tweaks
 
-Firefox userchrome and UI polishing
 Settings polishing
 Apps setup
 Files restore from file backups
