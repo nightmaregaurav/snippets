@@ -1,0 +1,10 @@
+sudo modprobe loop
+loop=$(sudo losetup -f)
+sudo losetup $loop /path/to/file.iso
+sudo partprobe $loop
+sudo gparted $loop
+	Resize and move stuff and apply and close
+sudo fdisk -l /path/to/file.iso
+	Copy number in end col of last row as $end
+sudo truncate --size=$[($end+1)*512] 
+sudo losetup -d $loop

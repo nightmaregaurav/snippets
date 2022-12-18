@@ -22,7 +22,7 @@ install sublime-text-4 from AUR
 cleanup
 
 sudo pacman -Syyyu
-sudo pacman -S libva-mesa-driver opencl-driver opencl-headers gst-libav gst-plugin-libcamera libcamera-tools pipewire-audio malcontent manjaro-printer linux-firmware-qlogic nodejs npm yarn jdk-openjdk python-pip firefox-developer-edition composer flameshot bamf appmenu-gtk-module libkeybinder3 libdbusmenu-gtk2 libdbusmenu-gtk3 libdbusmenu-qt5 sqlitebrowser pavucontrol-qt simplescreenrecorder telegram-desktop virt-manager screenkey
+sudo pacman -S libva-mesa-driver opencl-driver opencl-headers gst-libav gst-plugin-libcamera libcamera-tools pipewire-audio malcontent manjaro-printer linux-firmware-qlogic nodejs npm yarn jdk-openjdk python-pip firefox-developer-edition composer flameshot bamf appmenu-gtk-module libkeybinder3 libdbusmenu-gtk2 libdbusmenu-gtk3 libdbusmenu-qt5 sqlitebrowser pavucontrol-qt simplescreenrecorder telegram-desktop virt-manager screenkey bluez bluez-tools bluez-utils bluez-hid2hci bluez-plugins
 sudo pacman -Scc
 sudo paccache -r
 
@@ -133,6 +133,9 @@ Add extensions:
 	Transparent Window Moving: on
 	Alphabetical App grid: on
 	Wifi Qr Code: on
+	Bluetooth Quick Connect:
+		Keep the menu open after toggling: Yes
+		Show Reconnect Button: Yes
 
 add virtual sink and camera
 flameshot config

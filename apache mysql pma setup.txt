@@ -37,10 +37,12 @@ install phpmyadmin from package manager
 Create File /etc/httpd/conf/extra/phpmyadmin.conf and write:
 Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
 <Directory "/usr/share/webapps/phpMyAdmin">
+    DirectoryIndex index.php
     AllowOverride All
     Options FollowSymlinks
     Require all granted
 </Directory>
+chmod 644 /etc/httpd/conf/extra/phpmyadmin.conf
 
 Edit /etc/httpd/conf/httpd.conf and write at last:
 # phpMyAdmin configuration

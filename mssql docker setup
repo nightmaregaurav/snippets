@@ -1,0 +1,33 @@
+sudo docker pull mcr.microsoft.com/mssql/server:2022-latest
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=ghost12#" -p 1433:1433 --name mssql --hostname mssql -d mcr.microsoft.com/mssql/server:2022-latest
+
+becb1cfc9d5294da9def743fb9e87169aa953d27294c734b3cfcac9bdc171c9f
+
+install mssql-tools using rpmtoarch
+
+sqlcmd -S localhost,1433 -U SA -P 'ghost12#'
+
+need to hit go after each command
+
+
+
+to start sudo docker start mssql
+
+
+Create /etc/systemd/system/mssql.service
+[Unit]
+Description=Docker mssql service
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=docker start mssql
+ExecStop=docker stop mssql
+Restart=always
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+
+
+sudo systemctl daemon-reload
