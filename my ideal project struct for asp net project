@@ -1,0 +1,35 @@
+MyAspNetApp (Solution)
+|
++---> MyAspNetApp (ASP.NET Web and API)
+|   |
+|   +---> MyAspNetApp.Business
+|   |
+|   +---> MyAspNetApp.Data
+|
++---> MyAspNetApp.Abstraction (OtherCommon Interfaces)
+|
++---> MyAspNetApp.Abstraction.Data (Repository Interfaces)
+|   |
+|   +---> MyAspNetApp.Entity
+|
++---> MyAspNetApp.Abstraction.Business (Service Interfaces)
+|   |
+|   +---> MyAspNetApp.Contracts
+|
++---> MyAspNetApp.Business (Service Layer)
+|   |
+|   +---> MyAspNetApp.Abstraction.Business
+|   |
+|   +---> MyAspNetApp.Abstraction.Data
+|   |
+|   +---> MyAspNetApp.Abstraction
+|
++---> MyAspNetApp.Contracts (View Models and DTOs)
+|
++---> MyAspNetApp.Data (Repository Layer)
+|   |
+|   +---> MyAspNetApp.Abstraction.Data
+|   |
+|   +---> MyAspNetApp.Abstraction
+|
++---> MyAspNetApp.Entity (Entities and Custom Data Types)
