@@ -93,6 +93,7 @@ function recurse-run() {
     echo "Starting recursion from directory root: $root_dir"
     echo -n "Enter command to run in all dirs >>> "
     read cmd
+    
     if [[ -z "$cmd" ]]; then
       echo -n "No commands found! Exiting..."
       break
@@ -100,12 +101,14 @@ function recurse-run() {
 
     for dir in $(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/\.*'); do
       cd "$dir"
-      echo "************************************"
-      echo "[$dir]"
-      echo "************************************"
+      printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
+      echo ">>> [$dir]"
       eval "$cmd"
       cd "$root_dir"
     done
+
+    echo ""
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '*'
     echo "Recursion complete!!"
   done
 }
