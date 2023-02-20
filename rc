@@ -84,7 +84,6 @@ function recurse-run() {
 
   if [[ -n "$initial_command" ]]; then
     echo "Executing initial command as you asked [$initial_command]"
-    echo ""
     eval "$initial_command"
   fi
 
