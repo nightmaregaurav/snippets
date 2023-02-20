@@ -78,34 +78,39 @@ function freeportafter
   echo $port;
 }
 
-function recurse-run
-{
-  blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
+function recurse-run() {
+  initial_command="$*"
+  shift
 
-  initial_command="$*";
-  if [[ "$initial_command" != "$blank" ]]; then
-    echo "Executing initial command as you asked [$initial_command]";
-    $initial_command;
-  fi;
+  if [[ -n "$initial_command" ]]; then
+    echo "Executing initial command as you asked [$initial_command]"
+    echo ""
+    eval "$initial_command"
+  fi
 
-  echo "You are currently in $(pwd)";
-  echo "Enter command to run in all dirs >>> "
-  read x;
-  cmd=$(echo $x | sed 's/^[\t]*//g');
-  echo "";
+  root_dir=$(pwd)
 
-  for i in ./*;
-  do
-    if [[ -d $i ]]; then
-      cd "$i";
-      echo "************************************";
-      echo "Running command for $i";
-      echo "************************************";
-      echo "$($cmd 2>&1)";
-      cd ..;
-    fi;
-  done;
+  while true; do
+    echo "Starting recursion from directory root: $root_dir"
+    echo -n "Enter command to run in all dirs >>> "
+    read cmd
+    if [[ -z "$cmd" ]]; then
+      echo -n "No commands found! Exiting..."
+      break
+    fi
+
+    for dir in $(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/\.*'); do
+      cd "$dir"
+      echo "************************************"
+      echo "[$dir]"
+      echo "************************************"
+      eval "$cmd"
+      cd "$root_dir"
+    done
+    echo "Recursion complete!!"
+  done
 }
+
 
 #######################################################
 #          Set the amazing command prompt             #
