@@ -227,7 +227,10 @@ function __setprompt
   PS1+="${BLUE}${BOLD} $(date +'%-I':%M%P)${NOCOLOR})-" # Time
 
   # CPU
-  PS1+="(${MAGENTA}${BOLD}CPU $(cpu)${PERCENTAGE}${NOCOLOR})-"
+  CPU_USAGE=$(cpu)
+  if [[ "$CPU_USAGE" =~ ^[0-9]+\.*[0-9]*$ ]]; then
+    PS1+="(${MAGENTA}${BOLD}CPU ${CPU_USAGE}${PERCENTAGE}${NOCOLOR})-"
+  fi
 
   # hostname
   PS1+="(${YELLOW}${BOLD}${HOSTNAME}"
