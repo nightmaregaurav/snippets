@@ -95,7 +95,7 @@ function recurse-run() {
   while true; do
     echo "Starting recursion from directory root: $root_dir"
     echo -n "Enter command to run in all dirs >>> "
-    read cmd
+    read -r cmd
     
     if [[ -z "$cmd" ]]; then
       echo -n "No commands found! Exiting..."
