@@ -4,14 +4,18 @@ touch ~/.extip
 
 # function to set ext ip in a file
 function set_public_ip_to_extip_file() {
-  local addr=$( timeout 3 dig +short myip.opendns.com @resolver1.opendns.com || \
-    timeout 3 curl -s http://whatismyip.akamai.com/ || \
+  local addr=$( timeout 3 curl -s http://whatismyip.akamai.com/ || \
     timeout 3 curl -s http://ifconfig.io/ip || \
-    timeout 3 curl -s http://ipecho.net/plain || \
-    timeout 3 curl -s http://ident.me/
+    timeout 3 curl -s http://ifconfig.me/ip || \
+    timeout 3 curl -s http://ipecho.net/plain
   )
   [ $? -ne 0 ] && addr="0.0.0.0"
-  echo $addr > ~/.extip
+
+  if [[ "$addr" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo $addr > ~/.extip
+  elif [[ "$addr" =~ ^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$ ]]; then
+    echo $addr > ~/.extip
+  fi
 }
 (set_public_ip_to_extip_file &) > /dev/null 2>&1
 
@@ -244,7 +248,7 @@ function __setprompt
 
   # Current Global IP
   IP=$(publicip)
-  if [[ "$IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  if [ "$IP" != "" ]; then
     PS1+="-(${RED}${BOLD}${IP}${NOCOLOR})"
   fi
 
