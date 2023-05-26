@@ -1,0 +1,1 @@
+xfreerdp +dynamic-resolution +window-drag +home-drive +auto-reconnect +clipboard +cert:ignore +v:<IP> +port:<PORT> +u:"<USERNAME>" +p:"<PASSWORD>"
