@@ -4,7 +4,7 @@ Type=Application
 Name=Screen Mirror (scrcpy)
 GenericName=Scrcpy
 Comment=View Android Screen On Linux
-Exec=scrcpy -w %u
+Exec=scrcpy --hid-keyboard --stay-awake %u
 Icon=phone-symbolic
 Terminal=false
 X-MultipleArgs=false
@@ -13,21 +13,21 @@ Actions=borderless;nodisplay;nodisplayborderless;view;viewborderless;
 X-KDE-SubstituteUID=false
 
 [Desktop Action borderless]
-Exec=scrcpy --window-borderless -w %u
+Exec=scrcpy --hid-keyboard --window-borderless --stay-awake %u
 Name=With borderless window
 
 [Desktop Action nodisplay]
-Exec=scrcpy -S -w %u
+Exec=scrcpy --hid-keyboard --turn-screen-off --stay-awake %u
 Name=With turned off android's display
 
 [Desktop Action nodisplayborderless]
-Exec=scrcpy -S --window-borderless -w %u
+Exec=scrcpy --hid-keyboard --turn-screen-off --window-borderless --stay-awake %u
 Name=With turned off android's display and borderless wondow
 
 [Desktop Action view]
-Exec=scrcpy -n %u
+Exec=scrcpy --no-control --stay-awake %u
 Name=With view only mode
 
 [Desktop Action viewborderless]
-Exec=scrcpy -n --window-borderless %u
+Exec=scrcpy --no-control --window-borderless --stay-awake %u
 Name=With view only mode and borderless wondow
