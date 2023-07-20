@@ -68,9 +68,9 @@ function freeportafter
     port=5000;
   fi;
 
-  myarray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
+  portArray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
 
-  for i in "${myarray[@]}"
+  for i in "${portArray[@]}"
   do
     if [[ $i == $port ]]; then
       port=$((port+1));
@@ -285,9 +285,13 @@ precmd_functions=(__setprompt)
 
 export WORKON_HOME="$HOME/.virtualenvs"
 export PROJECT_HOME="$HOME/Projects"
+export DOTNET_ROOT=$HOME/.dotnet
+export LD_LIBRARY_PATH=/usr/local/lib
+
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   . /usr/local/bin/virtualenvwrapper.sh
-fi
-if [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
+elif [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
   . ~/.local/bin/virtualenvwrapper.sh
 fi
+
+export PATH=$PATH:$HOME/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:$HOME/.dotnet:$HOME/.dotnet/tools:$HOME/.config/composer/vendor/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:/opt/mssql-tools/bin:$HOME/.flutter/bin
