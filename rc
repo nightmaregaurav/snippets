@@ -121,6 +121,9 @@ function recurse-run() {
   done
 }
 
+function mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
 
 #######################################################
 #          Set the amazing command prompt             #
