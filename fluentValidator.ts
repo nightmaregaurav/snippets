@@ -1,14 +1,14 @@
-class Ensure {
-  private value: any;
+class Ensure<T> {
+  private value: T;
   private errors: string[];
 
-  constructor(value: any) {
+  constructor(value: T) {
     this.value = value;
     this.errors = [];
   }
 
-  public static given(value: any): Validate {
-    return new Validate(value);
+  public static given<T>(value: T): Ensure<T> {
+    return new Ensure<T>(value);
   }
 
   public isNullish(): Validate {
