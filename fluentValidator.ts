@@ -240,7 +240,7 @@ class Ensure {
     return this;
   }
 
-  public evaluate(): { bool: boolean; errors: string[] } {
-    return { bool: this.errors.length === 0, errors: this.errors };
+  public evaluate(): { isValid: boolean; errors: string[] } {
+    return { isValid: this.errors.length === 0, errors: this.errors };
   }
 }
