@@ -2,13 +2,18 @@ class Ensure<T> {
   private value: T;
   private errors: string[];
 
-  constructor(value: T) {
+  constructor(value: T, prevErrors: string[] = []) {
     this.value = value;
-    this.errors = [];
+    this.errors = prevErrors;
   }
 
   public static given<T>(value: T): Ensure<T> {
     return new Ensure<T>(value);
+  }
+
+  public peek<TT>(transform: (value: T) => TT): Ensure<TT> {
+    const newValue = transform(this.value);
+    return Ensure.given<TT>(newValue, [...this.errors]);
   }
 
   public isNullish(): Validate {
