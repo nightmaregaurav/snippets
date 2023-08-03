@@ -1,19 +1,26 @@
-class Ensure<T> {
+export class Ensure<T> {
+    private readonly parent?: Ensure<any>;
     private readonly value: T;
     private readonly errors: string[];
 
-    constructor(value: T, prevErrors: string[] = []) {
+    constructor(value: T, parent?: Ensure<any>) {
+        if (parent) this.parent = parent;
+        this.errors = parent?.errors ?? [];
         this.value = value;
-        this.errors = prevErrors;
     }
 
-    public static given<T>(value: T, prevErrors: string[] = []): Ensure<T> {
-        return new Ensure<T>(value, prevErrors);
+    public static given<T>(value: T): Ensure<T> {
+        return new Ensure<T>(value);
     }
 
-    public peek<TT>(transform: (value: T) => TT): Ensure<TT> {
+    public fold<TT>(transform: (value: T) => TT): Ensure<TT> {
         const newValue = transform(this.value);
-        return Ensure.given<TT>(newValue, [...this.errors]);
+        return new Ensure<TT>(newValue, this);
+    }
+
+    public unfold<TT>(): Ensure<TT> {
+        if (!this.parent) throw Error("Root of the validation can not have parent.");
+        return this.parent;
     }
 
     public passesTest(testName: string, test: (value: T) => boolean): Ensure<T> {
