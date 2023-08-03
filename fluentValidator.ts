@@ -4,8 +4,12 @@ export class Ensure<T> {
     private readonly errors: string[];
 
     constructor(value: T, parent?: Ensure<any>) {
-        if (parent) this.parent = parent;
-        this.errors = parent?.errors ?? [];
+        if (parent){
+            this.parent = parent;
+            this.errors = parent.errors;
+        } else {
+            this.errors = [];
+        }
         this.value = value;
     }
 
@@ -13,14 +17,9 @@ export class Ensure<T> {
         return new Ensure<T>(value);
     }
 
-    public fold<TT>(transform: (value: T) => TT): Ensure<TT> {
+    public peek<TT>(transform: (value: T) => TT): Ensure<TT> {
         const newValue = transform(this.value);
         return new Ensure<TT>(newValue, this);
-    }
-
-    public unfold<TT>(): Ensure<TT> {
-        if (!this.parent) throw Error("Root of the validation can not have parent.");
-        return this.parent;
     }
 
     public passesTest(testName: string, test: (value: T) => boolean): Ensure<T> {
