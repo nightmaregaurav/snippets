@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 
 public class MethodSignature
 {
@@ -77,6 +78,6 @@ public class MethodSignature
 
     public new string ToString()
     {
-        return $"{string.Join(" ", AccessModifiers)} {(IsStatic ? "static " : "")} {ReturnType} {Namespace}.{ClassName}.{Name} ({string.Join(", ", Parameters.Select(x => x.ToString()))});";
+        return $"{string.Join(" ", AccessModifiers)} {(IsStatic ? "static " : "")}{ReturnType} {(Namespace != null ? Namespace + "." : "")}{ClassName}.{Name} ({string.Join(", ", Parameters.Select(x => x.ToString()))});";
     }
 }
