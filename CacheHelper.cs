@@ -1,4 +1,3 @@
-using Next.Common.Extensions;
 using StackExchange.Redis;
 
 namespace CacheHelper;
