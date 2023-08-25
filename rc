@@ -296,4 +296,19 @@ elif [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
   . ~/.local/bin/virtualenvwrapper.sh
 fi
 
-export PATH=$PATH:$HOME/.local/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:$HOME/.dotnet:$HOME/.dotnet/tools:$HOME/.config/composer/vendor/bin:$HOME/.local/share/JetBrains/Toolbox/scripts:/opt/mssql-tools/bin:$HOME/.flutter/bin
+PATH_LIST=(
+    $HOME/.local/bin
+    /usr/local/bin
+    /usr/bin
+    /usr/local/sbin
+    /usr/bin/site_perl
+    /usr/bin/vendor_perl
+    /usr/bin/core_perl
+    $HOME/.dotnet
+    $HOME/.dotnet/tools
+    $HOME/.config/composer/vendor/bin
+    $HOME/.local/share/JetBrains/Toolbox/scripts
+    /opt/mssql-tools/bin
+    $HOME/.flutter/bin
+)
+export PATH=$PATH:$(IFS=:; echo "${PATH_LIST[*]}")
