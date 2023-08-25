@@ -9,6 +9,6 @@ Host <IP/domain>
 
 
 # Usually not needed on linux
-* Your ssh-agent must be running before you ssh into server: try -- eval `ssh-agent`
-* Your valid Id must be on use by ssh-agent before you ssh into server : try -- ssh-add ~/.ssh/your_key
+* Your ssh-agent must be running before you ssh into server: try -- eval `ssh-agent` [For Windows: Set-Service ssh-agent -StartupType Automatic; Start-Service ssh-agent; Get-Service ssh-agent]
+* Your valid Id must be on use by ssh-agent before you ssh into server : try -- ssh-add ~/.ssh/your_key [For Windows: ssh-add C:\Users\your-name\ssh\id_rsa]
 * Make sure other ssh config are not overriding our config and ~/.ssh/config is being loaded -- ssh -v URL
