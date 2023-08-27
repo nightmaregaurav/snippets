@@ -12,23 +12,23 @@ MyAspNetApp (Solution)
 |
 +---> Business (Service/Business Logic Layer)
 |   |
-|   +---> Abstraction.Business (To implement Interfaces & setup DI)
+|   +---> Business.Abstraction (To implement Interfaces & setup DI)
 |   |
-|   +---> Abstraction.Data (To call IRepositories)
+|   +---> Data.Abstraction (To call IRepositories)
 |   |
 |   +---> Shared (To access shared helpers)
 |
 +---> Data (Repository/Data access Layer)
 |   |
-|   +---> Abstraction.Data (To implement Interfaces & setup DI)
+|   +---> Data.Abstraction (To implement Interfaces & setup DI)
 |   |
 |   +---> Shared (To access shared helpers)
 |
-+---> Abstraction.Business (Service/Business Logic Interfaces)
++---> Business.Abstraction (Service/Business Logic Interfaces)
 |   |
 |   +---> Business.Contracts (To define return type as DTOs in IService methods)
 |
-+---> Abstraction.Data (Repository/Data access Interfaces)
++---> Data.Abstraction (Repository/Data access Interfaces)
 |   |
 |   +---> Data.Entity (To define return type as Entities in IRepository methods)
 |
