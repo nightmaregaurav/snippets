@@ -30,12 +30,12 @@ MyAspNetApp (Solution)
 |
 +---> Abstraction.Data (Repository/Data access Interfaces)
 |   |
-|   +---> Entity (To define return type as Entities in IRepository methods)
+|   +---> Data.Entity (To define return type as Entities in IRepository methods)
 |
 +---> Contracts (API/View Models)
 |
 +---> Business.Contracts (DTOs)
 |
-+---> Entity (Entities and Custom Data Types)
++---> Data.Entity (Entities and Custom Data Types)
 |
 +---> Shared (Common Helpers)
