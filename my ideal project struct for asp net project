@@ -1,41 +1,41 @@
 MyAspNetApp (Solution)
 |
-+---> MyAspNetApp (ASP.NET Web and API)
++---> Web/Api (ASP.NET Web and/or API)
 |   |
-|   +---> MyAspNetApp.Business
+|   +---> Business (To call IServices & acknowledge DIs)
 |   |
-|   +---> MyAspNetApp.Data
+|   +---> Data (To acknowledge DIs)
+|   |
+|   +---> Shared (To access shared helpers)
+|	|
+|	+---> Contracts (To access api/view models)
 |
-+---> MyAspNetApp.Business (Service Layer)
++---> Business (Service/Business Logic Layer)
 |   |
-|   +---> MyAspNetApp.Abstraction.Business
+|   +---> Abstraction.Business (To implement Interfaces & setup DI)
 |   |
-|   +---> MyAspNetApp.Abstraction.Data
+|   +---> Abstraction.Data (To call IRepositories)
 |   |
-|   +---> MyAspNetApp.Abstraction
-|   |
-|   +---> MyAspNetApp.Shared
+|   +---> Shared (To access shared helpers)
 |
-+---> MyAspNetApp.Data (Repository Layer)
++---> Data (Repository/Data access Layer)
 |   |
-|   +---> MyAspNetApp.Abstraction.Data
+|   +---> Abstraction.Data (To implement Interfaces & setup DI)
 |   |
-|   +---> MyAspNetApp.Abstraction
+|   +---> Shared (To access shared helpers)
+|
++---> Abstraction.Business (Service/Business Logic Interfaces)
 |   |
-|   +---> MyAspNetApp.Shared
+|   +---> Business.Contracts (To define return type as DTOs in IService methods)
 |
-+---> MyAspNetApp.Abstraction.Business (Service Interfaces)
++---> Abstraction.Data (Repository/Data access Interfaces)
 |   |
-|   +---> MyAspNetApp.Contracts
+|   +---> Entity (To define return type as Entities in IRepository methods)
 |
-+---> MyAspNetApp.Abstraction.Data (Repository Interfaces)
-|   |
-|   +---> MyAspNetApp.Entity
++---> Contracts (API/View Models)
 |
-+---> MyAspNetApp.Contracts (View Models and DTOs)
++---> Business.Contracts (DTOs)
 |
-+---> MyAspNetApp.Entity (Entities and Custom Data Types)
++---> Entity (Entities and Custom Data Types)
 |
-+---> MyAspNetApp.Abstraction (OtherCommon Interfaces)
-|
-+---> MyAspNetApp.Shared (Common Helpers)
++---> Shared (Common Helpers)
