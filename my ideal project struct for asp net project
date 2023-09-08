@@ -8,7 +8,7 @@ MyAspNetApp (Solution)
 |   |
 |   +---> Shared (To access shared helpers)
 |	|
-|	+---> Contracts (To access api/view models)
+|	+---> Models (To access api/view models)
 |
 +---> Business (Service/Business Logic Layer)
 |   |
@@ -26,16 +26,16 @@ MyAspNetApp (Solution)
 |
 +---> Business.Abstraction (Service/Business Logic Interfaces)
 |   |
-|   +---> Business.Contracts (To define return type as DTOs in IService methods)
+|   +---> Business.Models (To define return type as DTOs in IService methods)
 |
 +---> Data.Abstraction (Repository/Data access Interfaces)
 |   |
-|   +---> Data.Entity (To define return type as Entities in IRepository methods)
+|   +---> Data.Models (To define return type as Entities in IRepository methods)
 |
-+---> Contracts (API/View Models)
++---> Models (API/View Models)
 |
-+---> Business.Contracts (DTOs)
++---> Business.Models (DTOs)
 |
-+---> Data.Entity (Entities and Custom Data Types)
++---> Data.Models (Entities and Custom Data Types)
 |
 +---> Shared (Common Helpers)
