@@ -1,0 +1,6 @@
+sudo mkdir /mnt/MOUNTFOLDER
+
+install rclone
+run rclose and complete configuration
+
+sudo rclone --vfs-cache-mode writes mount "CONFIG-NAME":  /mnt/MOUNTFOLDER

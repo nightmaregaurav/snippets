@@ -1,0 +1,9 @@
+sudo mkdir /mnt/shared
+
+install samba, cifs-utils
+
+sudo mount -t cifs //IP-ADDRESS/SHAREDFOLDERPATH /mnt/shared
+
+OR
+
+sudo mount -t cifs //IP-ADDRESS/SHAREDFOLDERPATH /mnt/shared -o username=USERNAME,password=PASSWORD,domain=DOMAIN
