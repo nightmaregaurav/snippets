@@ -6,27 +6,38 @@ import json
 from bs4 import BeautifulSoup
 
 
-def retrieve_data(url):
-    response = requests.get(url)
+def retrieve_data(data_url):
+    response = requests.get(data_url)
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Failed to retrieve data from {url}")
+        print(f"Failed to retrieve data from {data_url}")
         return None
 
 
-def get_html_text(url):
-    response = requests.get(url)
+def get_html_text(page_url):
+    response = requests.get(page_url)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         return soup.get_text()
     else:
-        print(f"Failed to retrieve content from {url}. Status code: {response.status_code}")
+        print(f"Failed to retrieve content from {page_url}. Status code: {response.status_code}")
         return None
 
 
+def local_gov_type_name_to_id(type_name):
+    local_gov_type_name_to_id_map = {
+        "gaunpalika": "1",
+        "nagarpalika": "2",
+        "upamahanagarpalika": "3",
+        "mahanagarpalika": "4",
+    }
+
+    return local_gov_type_name_to_id_map.get(type_name.lower(), "0")
+
+
 def nepali_to_english(text):
-    nepali_to_english = {
+    nepali_to_english_map = {
         '०': '0',
         '१': '1',
         '२': '2',
@@ -38,14 +49,32 @@ def nepali_to_english(text):
         '८': '8',
         '९': '9'
     }
-    return ''.join([nepali_to_english.get(char, char) for char in text])
+    return ''.join([nepali_to_english_map.get(char, char) for char in text])
+
+
+def find_duplicates(local_gov_list):
+    id_dict = {}
+    duplicate_entries = []
+    unique_entries = []
+
+    for entry in local_gov_list:
+        entry_id = entry["LocalGovIdForDistrict"] + "-" + entry["district_id"]
+        if entry_id in id_dict:
+            id_dict[entry_id] += 1
+            if id_dict[entry_id] > 1:
+                duplicate_entries.append(entry_id)
+        else:
+            id_dict[entry_id] = 1
+            unique_entries.append(entry)
+
+    return duplicate_entries, unique_entries
 
 
 provinceDataBaseUrl = "https://sthaniya.gov.np/gis/data/Province{number}.json"
 districtDataBaseUrl = "https://sthaniya.gov.np/gis/data/Dist_GaPa/{targetCode}.json"
 municipalityDataBaseUrl = "https://sthaniya.gov.np/gis/gapanapa.php?p={did}-{gnid}-00"
 
-provinceUrls = [provinceDataBaseUrl.replace("{number}", str(x)) for x in range(1,8)]
+provinceUrls = [provinceDataBaseUrl.replace("{number}", str(x)) for x in range(1, 8)]
 
 provinceData = []
 for url in provinceUrls:
@@ -61,13 +90,22 @@ print("Extracting districts from province data.")
 _districts = []
 for provinceInfo in provinceData:
     _districts.append(provinceInfo["features"])
-districts = [dist for distList in _districts for dist in distList]
+__districts = [dist["properties"] for distList in _districts for dist in distList]
+districts = [
+    {
+        "DistrictId": district["districtid"],
+        "Nepali": district["DISTRICT"],
+        "Province": district["Province"],
+        "Level": district["Level"],
+        "TARGET": district["TARGET"],
+    } for district in __districts
+]
 
 print("Creating district urls.")
-districeUrls = [districtDataBaseUrl.replace("{targetCode}", x["properties"]["TARGET"].title()) for x in districts]
+districtUrls = [districtDataBaseUrl.replace("{targetCode}", x["TARGET"].title()) for x in districts]
 
 districtData = []
-for url in districeUrls:
+for url in districtUrls:
     print(f"Retrieving Data From {url}")
     district_data = retrieve_data(url)
     if district_data:
@@ -76,50 +114,96 @@ for url in districeUrls:
     else:
         print("--> Failure!")
 
-print("Extracting municipalities from district data.")
+print("Extracting local governments from district data.")
 _municipalities = []
 for districtInfo in districtData:
     _municipalities.append(districtInfo["features"])
-municipalities = [mun for municipalityList in _municipalities for mun in municipalityList]
+__municipalities = [mun["properties"] for municipalityList in _municipalities for mun in municipalityList]
+municipalities = [
+    {
+        "Name": municipality.get("FIRST_GaPa", ""),
+        "Type": local_gov_type_name_to_id(municipality.get("FIRST_Type", "")),
+        "DistrictId": municipality.get("did", 0),
+        "LocalGovId": municipality.get("gnid", 0),
+    } for municipality in __municipalities
+]
 
-print("Creating municipality urls.")
+print("Creating local government urls.")
 municipalityUrls = []
-for municipalitiy in municipalities:
-    props = municipalitiy["properties"]
-    name = props["FIRST_GaPa"] or ""
-    district = props["FIRST_DIST"] or ""
-    gnid = str(props["gnid"] or 0)
-    did = str(props["did"] or 0)
-    if did != "0" and gnid != "0" and district != "":
-        municipalityUrls.append((name, district.title(), municipalityDataBaseUrl.replace("{gnid}", gnid).replace("{did}", did), did, gnid))
+for municipality in municipalities:
+    name = municipality["Name"]
+    mun_type = municipality["Type"]
+    gnid = str(municipality["LocalGovId"])
+    did = str(municipality["DistrictId"])
+    if did != "0" and gnid != "0" and mun_type != "":
+        municipalityUrls.append((
+            name,
+            mun_type,
+            municipalityDataBaseUrl.replace("{gnid}", gnid).replace("{did}", did),
+            did,
+            gnid
+        ))
 
 municipalityData = []
 for url in municipalityUrls:
     print(f"Retrieving Data From {url[2]}")
     municipality_data = get_html_text(url[2])
     if municipality_data:
-        pattern = r'जम्मा वडा संख्या\n(.+)'
-        match = re.search(pattern, municipality_data, re.MULTILINE)
-        if match:
+        total_ward_pattern = r'जम्मा वडा संख्या\n(.+)'
+        total_ward_match = re.search(total_ward_pattern, municipality_data, re.MULTILINE)
+
+        nepali_name_pattern = r'(.+)पालिका(.+)'
+        nepali_name_match = re.search(nepali_name_pattern, municipality_data, re.MULTILINE)
+
+        if total_ward_match and nepali_name_match:
             print("--> Success!")
-            municipalityData.append((url[0], url[1], nepali_to_english(match.group(1)), url[3], url[4]))
+
+            nepali_name = nepali_name_match.group(1)
+            nepali_name = (nepali_name
+                           .replace("उपमहानगर", "")
+                           .replace("महानगर", "")
+                           .replace("नगर", "")
+                           .replace("गाउँ", "")
+                           ).strip()
+
+            municipalityData.append((
+                url[0],
+                nepali_name,
+                url[1],
+                nepali_to_english(total_ward_match.group(1)).strip(),
+                url[3],
+                url[4]
+            ))
         else:
-            print("--> Failure!")
+            print("--> Skip!")
     else:
         print("--> Failure!")
-        
-finalData = []
-for municipality in municipalityData:
-    finalData.append({
-        "name": municipality[0],
-        "district": municipality[1],
-        "ward": municipality[2],
-        "did": municipality[3],
-        "gnid": municipality[4]
-    });
-    
 
-fileJson = json.dumps(finalData)
+localGovData = []
+i = 1
+for municipality in municipalityData:
+    localGovData.append({
+        "id": i,
+        "english": municipality[0],
+        "nepali": municipality[1],
+        "district_id": municipality[4],
+        "city_type_id": municipality[2],
+        "total_wards": municipality[3],
+        "LocalGovIdForDistrict": municipality[5]
+    })
+    i += 1
+
+print(f"[*] Retrieved total of {len(localGovData)} records.")
+duplicates, unique = find_duplicates(localGovData)
+print(f"[*] Duplicate records: {len(duplicates)}")
+print(f"[*] Unique records: {len(unique)}")
+
+fileJson = json.dumps(duplicates)
+jsonFile = open("dubs.json", "w")
+jsonFile.write(fileJson)
+jsonFile.close()
+
+fileJson = json.dumps(unique)
 jsonFile = open("data.json", "w")
 jsonFile.write(fileJson)
 jsonFile.close()
