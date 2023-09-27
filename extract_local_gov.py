@@ -2,7 +2,6 @@
 
 import requests
 import re
-import json
 from bs4 import BeautifulSoup
 
 
@@ -152,7 +151,7 @@ for url in municipalityUrls:
         total_ward_pattern = r'जम्मा वडा संख्या\n(.+)'
         total_ward_match = re.search(total_ward_pattern, municipality_data, re.MULTILINE)
 
-        nepali_name_pattern = r'(.+)पालिका(.+)'
+        nepali_name_pattern = r'(.+)पालिका.*'
         nepali_name_match = re.search(nepali_name_pattern, municipality_data, re.MULTILINE)
 
         if total_ward_match and nepali_name_match:
@@ -180,10 +179,8 @@ for url in municipalityUrls:
         print("--> Failure!")
 
 localGovData = []
-i = 1
 for municipality in municipalityData:
     localGovData.append({
-        "id": i,
         "english": municipality[0],
         "nepali": municipality[1],
         "district_id": municipality[4],
@@ -191,19 +188,41 @@ for municipality in municipalityData:
         "total_wards": municipality[3],
         "LocalGovIdForDistrict": municipality[5]
     })
-    i += 1
 
 print(f"[*] Retrieved total of {len(localGovData)} records.")
 duplicates, unique = find_duplicates(localGovData)
 print(f"[*] Duplicate records: {len(duplicates)}")
 print(f"[*] Unique records: {len(unique)}")
 
-fileJson = json.dumps(duplicates)
-jsonFile = open("dubs.json", "w")
-jsonFile.write(fileJson)
-jsonFile.close()
+print("[+] Generating local_level.sql file")
+# noinspection SqlDialectInspection,SqlNoDataSourceInspection
+local_level_sql = '''
+CREATE TABLE IF NOT EXISTS local_level (
+  id int NOT NULL AUTO_INCREMENT,
+  english TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  nepali TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  district_id int NOT NULL,
+  city_type_id int NOT NULL,
+  total_wards int NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (district_id) REFERENCES district(id),
+  FOREIGN KEY (city_type_id) REFERENCES city_type(id)
+) CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-fileJson = json.dumps(unique)
-jsonFile = open("data.json", "w")
-jsonFile.write(fileJson)
-jsonFile.close()
+
+INSERT INTO `local_level` (`id`, `english`, `nepali`, `district_id`, `city_type_id`, `total_wards`) VALUES'''
+
+i = 1
+for local_level in unique:
+    local_level_sql += (f"\n(\n{i},\n'{local_level['english']}',\n'{local_level['nepali']}',\n"
+                        f"{local_level['district_id']},\n{local_level['city_type_id']},\n{local_level['total_wards']}\n"
+                        f"),\n")
+    i += 1
+
+local_level_sql = local_level_sql.strip().strip(",").strip()
+local_level_sql += ";\n"
+
+local_level_sql_file = open("local_level.sql", "w")
+local_level_sql_file.write(local_level_sql)
+local_level_sql_file.close()
+print(">>> DONE!!!")
