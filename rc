@@ -296,6 +296,14 @@ elif [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
   . ~/.local/bin/virtualenvwrapper.sh
 fi
 
+if [ -f $HOME/.dotnet/dotnet ]; then
+  export DOTNET_ROOT=$HOME/.dotnet
+elif [ -f /usr/local/share/dotnet/dotnet ]; then
+  export DOTNET_ROOT=/usr/local/share/dotnet
+elif [ -f /usr/share/dotnet/dotnet ]; then
+  export DOTNET_ROOT=/usr/share/dotnet
+fi
+
 PATH_LIST=(
     $HOME/.local/bin
     /usr/local/bin
