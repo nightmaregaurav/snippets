@@ -1,0 +1,54 @@
+############### Docker File ###############
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+USER root
+
+RUN apt-get update
+RUN apt-get install -yq curl apt-transport-https apt-utils gnupg gnupg1 gnupg2
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+RUN curl https://packages.microsoft.com/config/ubuntu/20.04/mssql-server-2022.list | tee /etc/apt/sources.list.d/mssql-server-2022.list
+RUN apt-get update
+RUN apt-get install -y mssql-server-ha mssql-server-fts
+RUN apt-get clean
+
+RUN rm -rf /var/lib/apt/lists
+
+ENTRYPOINT [ "/opt/mssql/bin/sqlservr" ]
+
+
+
+############### compose file ###############
+version: "3.9"
+services:
+  sqlserver:
+    container_name: sqlserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Admin@1433"
+      ACCEPT_EULA: "Y"
+      MSSQL_AGENT_ENABLED: "true"
+    volumes:
+      - type: bind
+        source: ~/.mssql-docker
+        target: /var/opt/mssql
+
+
+
+############### Service File ###############
+[Unit]
+Description=Docker MS SQL Server service
+
+[Service]
+User=root
+WorkingDirectory=/root
+ExecStart=docker start sqlserver
+ExecStop=docker stop sqlserver
+Restart=always
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
