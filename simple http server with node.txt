@@ -1,1 +1,1 @@
-npx http-server $(pwd) -a localhost --port 4200 http://localhost:4200? -d false --log-ip --gzip --brotli
+npx http-server $(pwd) -a localhost --port 4200 --proxy http://localhost:4200? -d false --log-ip --gzip --brotli
