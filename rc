@@ -37,7 +37,11 @@ PROMPT_EOL_MARK=""
 
 # Expand the history size
 export HISTFILESIZE=10000
+export SAVEHIST=10000
 export HISTSIZE=2000
+
+# Set history file
+export HISTFILE=~/.history
 
 # alias to show the date
 alias da='date "+%Y-%m-%d %A %T %Z"'
