@@ -309,9 +309,10 @@ elif [ -f /usr/share/dotnet/dotnet ]; then
 fi
 
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-[ -f /usr/share/nvm/nvm.sh ] && source /usr/share/nvm/nvm.sh
-[ -f /usr/share/nvm/bash_completion ] && source /usr/share/nvm/bash_completion
-[ -f /usr/share/nvm/install-nvm-exec ] && source /usr/share/nvm/install-nvm-exec
+[ -s "$NVM_DIR/nvm.sh" ] && source $NVM_DIR/nvm.sh
+[ -s "$NVM_DIR/bash_completion" ] && source $NVM_DIR/bash_completion
+[ -s "$NVM_DIR/install-nvm-exec" ] && source $NVM_DIR/install-nvm-exec
+
 
 PATH_LIST=(
     $HOME/.local/bin
