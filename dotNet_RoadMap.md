@@ -818,3 +818,5 @@ https://domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf
 * [ ] Clean Coders 43 - Productivity
 * [ ] Clean Coders 44 - Estimates
 * [ ] Clean Coders 45 - The Programmer's Oath
+
+This Roadmap was prepared by Crystal Solution Birtamode
