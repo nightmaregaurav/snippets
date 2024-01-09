@@ -1,1 +1,0 @@
-xfreerdp +dynamic-resolution +window-drag +home-drive +auto-reconnect +clipboard +offscreen-cache +multitouch -heartbeat +gestures +aero +bitmap-cache +disp +sound +microphone +video +t:"RDP Session" +v:<IP> +port:<PORT> +u:"<USERNAME>" +p:"<PASSWORD>"
