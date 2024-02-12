@@ -53,11 +53,7 @@ alias openports='netstat -nape --inet'
 alias sudo='sudo '
 
 # Get CPU usage
-if [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
-  alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
-else
-  alias cpu="echo NA"
-fi
+alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
 
 # Configure `time` format
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
@@ -127,6 +123,28 @@ function recurse-run() {
 
 function mkcd() {
     mkdir -p "$1" && cd "$1"
+}
+
+function to-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        echo "$1" | pbcopy  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        echo "$1" | xclip -selection clipboard  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
+}
+
+function from-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        pbpaste  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        xclip -selection clipboard -o  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
 }
 
 #######################################################
@@ -316,6 +334,7 @@ fi
 
 PATH_LIST=(
     $HOME/.local/bin
+    $HOME/bin
     /usr/local/bin
     /usr/bin
     /usr/local/sbin
