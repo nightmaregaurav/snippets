@@ -43,6 +43,14 @@ export HISTSIZE=2000
 # Set history file
 export HISTFILE=~/.history
 
+if [[ $isbash == "true" ]]; then
+  shopt -s histappend
+  PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+fi
+if [[ $iszsh == "true" ]]; then
+  setopt INC_APPEND_HISTORY
+fi
+
 # alias to show the date
 alias da='date "+%Y-%m-%d %A %T %Z"'
 
@@ -61,8 +69,8 @@ TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
 # Get free port after a port
 function freeportafter
 {
-  blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
-  port=$*;
+  local blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
+  local port=$*;
 
   if [[ "$port" == "$blank" ]]; then
     port=5000;
@@ -286,7 +294,7 @@ function __setprompt
     PS1+="${NOCOLOR}(${RED}${BOLD}${USERNAME}${NOCOLOR}) ${YELLOW}${BOLD}$(git rev-parse --abbrev-ref HEAD 2> /dev/null)${NOCOLOR}${RED} >>>${NOCOLOR} " # Root user
   fi
 
-  # Add python virtual env name if available
+  # Add python virtual env name to prompt if available
   if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT}" ] ; then
     env_name=$(basename "$VIRTUAL_ENV")
     if ! [ -z "${env_name}" ] ; then
@@ -295,7 +303,6 @@ function __setprompt
   fi
 
   # PS2 is used to continue a command using the \ character
-
   PS2+="${GREEN} >>>${NOCOLOR} "
 
   # PS3 is used to enter a number choice in a script
@@ -308,8 +315,9 @@ function __setprompt
 PROMPT_COMMAND='__setprompt'
 precmd_functions=(__setprompt)
 
-export WORKON_HOME="$HOME/.virtualenvs"
-export PROJECT_HOME="$HOME/Projects"
+# environment setup for python virtual environment
+export WORKON_HOME="$HOME/.python_virtual_envs"
+export PROJECT_HOME="$HOME/Repositories"
 export LD_LIBRARY_PATH=/usr/local/lib
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
@@ -318,6 +326,7 @@ elif [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
   . ~/.local/bin/virtualenvwrapper.sh
 fi
 
+# environment setup for dotnet
 if [ -f $HOME/.dotnet/dotnet ]; then
   export DOTNET_ROOT=$HOME/.dotnet
 elif [ -f /usr/local/share/dotnet/dotnet ]; then
@@ -326,12 +335,13 @@ elif [ -f /usr/share/dotnet/dotnet ]; then
   export DOTNET_ROOT=/usr/share/dotnet
 fi
 
+# environment setup for node virtual machine
 [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source $NVM_DIR/nvm.sh
 [ -s "$NVM_DIR/bash_completion" ] && source $NVM_DIR/bash_completion
 [ -s "$NVM_DIR/install-nvm-exec" ] && source $NVM_DIR/install-nvm-exec
 
-
+# path setup
 PATH_LIST=(
     $HOME/.local/bin
     $HOME/bin
