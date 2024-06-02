@@ -6,6 +6,7 @@ To install certutil, run the following command:
 
 ```bash
 sudo apt-get install libnss3-tools
+sudo dnf install nss-tools
 ```
 
 Then, create a new NSS database:
@@ -21,7 +22,6 @@ First, remove any existing development certificate:
 
 ```bash
 dotnet dev-certs https --clean
-sudo dotnet dev-certs https --clean
 ```
 
 Then, generate a new development certificate:

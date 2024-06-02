@@ -1,5 +1,16 @@
-# Install MariaDB and MariaDB clients
-    sudo pacman -S mariadb mariadb-clients
+# Install MariaDB and MariaDB clients From package manager
+    - Arch
+        ``` bash
+            sudo pacman -S mariadb mariadb-clients
+        ```
+    - RHEL
+        ``` bash
+            sudo dnf install mariadb mariadb-clients
+        ```
+    - Debian
+        ``` bash
+            sudo apt install mariadb mariadb-clients
+        ```
 
 # Initialize the MariaDB data directory
     sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
@@ -23,8 +34,19 @@
     commit;
     exit;
 
-# Install Apache, PHP, and PHP-Apache
-    sudo pacman -S apache php php-apache
+# Install Apache, PHP, and PHP-Apache From package manager
+    - Arch
+        ``` bash
+            sudo pacman -S apache php php-apache
+        ```
+    - RHEL
+        ``` bash
+            sudo dnf install apache php php-apache
+        ```
+    - Debian
+        ``` bash
+            sudo apt install apache php php-apache
+        ```
 
 # Configure Apache to use PHP
     sudo nano /etc/httpd/conf/httpd.conf

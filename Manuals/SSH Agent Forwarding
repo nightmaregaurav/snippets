@@ -2,7 +2,7 @@ SSH Agent Forwarding
 *****************************
 
 cd ~/.ssh
-nano confog
+nano config
 
 Host <IP/domain>
   ForwardAgent yes
