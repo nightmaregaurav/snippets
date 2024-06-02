@@ -1,0 +1,41 @@
+# Massively increase virtualized macOS by disabling spotlight.
+sudo mdutil -i off -a
+
+# Enable performance mode
+sudo nvram boot-args="serverperfmode=1 $(nvram boot-args 2>/dev/null | cut -f 2-)"
+
+# Enable `osascript` over SSH automatically without **sshd-keygen warning** and **full disk access**
+defaults write com.apple.universalaccessAuthWarning /System/Applications/Utilities/Terminal.app -bool true
+defaults write com.apple.universalaccessAuthWarning /usr/libexec -bool true
+defaults write com.apple.universalaccessAuthWarning /usr/libexec/sshd-keygen-wrapper -bool true
+defaults write com.apple.universalaccessAuthWarning com.apple.Messages -bool true
+defaults write com.apple.universalaccessAuthWarning com.apple.Terminal -bool true
+
+# Disable saving the application state on shutdown
+defaults write com.apple.loginwindow TALLogoutSavesState -bool false
+
+# Enable remote access
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
+    -activate \
+    -configure \
+    -access \
+    -off \
+    -restart \
+    -agent \
+    -privs \
+    -all \
+    -allowAccessFor -allUsers
+
+# Make WiFi stay connected to the strongest(usually closest) AP avaliable.
+sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport prefs JoinMode=Strongest
+
+# Disable updates (run as roots)
+sudo su
+defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload -bool false
+defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool false
+defaults write com.apple.commerce AutoUpdate -bool false
+defaults write com.apple.commerce AutoUpdateRestartRequired -bool false
+defaults write com.apple.SoftwareUpdate ConfigDataInstall -int 0
+defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 0
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 0
+defaults write com.apple.SoftwareUpdate AutomaticDownload -int 0
