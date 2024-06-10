@@ -5,10 +5,12 @@ setopt INC_APPEND_HISTORY
 #######################################################
 function __setprompt
 {
+  # Must come first!
+  local LAST_COMMAND=$?
+
   # refresh IP
   (set_public_ip_to_extip_file &) > /dev/null 2>&1
-
-  local LAST_COMMAND=$? # Must come first!
+  
   local NEWLINE=$'\n'
 
   PS1=""
@@ -52,43 +54,8 @@ function __setprompt
 
   # Show error exit code if there is one
   if [[ $LAST_COMMAND != 0 ]]; then
-    PS1+="${NOCOLOR}(${RED}${BOLD}ERROR${NOCOLOR})-(${RED}${BOLD}Exit Code ${NOCOLOR}${LAST_COMMAND}${NOCOLOR})-(${RED}${BOLD}"
-    if [[ $LAST_COMMAND == 1 ]]; then
-      PS1+="General error"
-    elif [ $LAST_COMMAND == 2 ]; then
-      PS1+="Missing keyword, command, or permission problem"
-    elif [ $LAST_COMMAND == 126 ]; then
-      PS1+="Permission problem or command is not an executable"
-    elif [ $LAST_COMMAND == 127 ]; then
-      PS1+="Command not found"
-    elif [ $LAST_COMMAND == 128 ]; then
-      PS1+="Invalid argument to exit"
-    elif [ $LAST_COMMAND == 129 ]; then
-      PS1+="Fatal error signal 1"
-    elif [ $LAST_COMMAND == 130 ]; then
-      PS1+="Script terminated by Control-C"
-    elif [ $LAST_COMMAND == 131 ]; then
-      PS1+="Fatal error signal 3"
-    elif [ $LAST_COMMAND == 132 ]; then
-      PS1+="Fatal error signal 4"
-    elif [ $LAST_COMMAND == 133 ]; then
-      PS1+="Fatal error signal 5"
-    elif [ $LAST_COMMAND == 134 ]; then
-      PS1+="Fatal error signal 6"
-    elif [ $LAST_COMMAND == 135 ]; then
-      PS1+="Fatal error signal 7"
-    elif [ $LAST_COMMAND == 136 ]; then
-      PS1+="Fatal error signal 8"
-    elif [ $LAST_COMMAND == 137 ]; then
-      PS1+="Fatal error signal 9"
-    elif [ $LAST_COMMAND -gt 255 ]; then
-      PS1+="Exit status out of range"
-    else
-      PS1+="Unknown error code"
-    fi
-    PS1+=")${NOCOLOR}${NEWLINE}"
-  else
-    PS1+=""
+    local error_text=$(get-error-text $LAST_COMMAND)
+    PS1+="${NOCOLOR}(${RED}${BOLD}ERROR${NOCOLOR})-(${YELLOW}${BOLD}Exit Code ${RED}${LAST_COMMAND}${NOCOLOR})-(${RED}${BOLD}${error_text}${NOCOLOR})${NEWLINE}"
   fi
 
   # Date

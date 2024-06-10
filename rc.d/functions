@@ -15,8 +15,7 @@ function set_public_ip_to_extip_file() {
 }
 
 # Get free port after a port
-function freeportafter
-{
+function freeportafter() {
   local blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
   local port=$*;
 
@@ -38,6 +37,7 @@ function freeportafter
   echo $port;
 }
 
+# Recursively run a command in folders
 function recurse-run() {
   initial_command="$*"
   shift "$#"
@@ -77,10 +77,12 @@ function recurse-run() {
   done
 }
 
+# mkdir & cd
 function mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
+# Copy to clipboard pipe
 function to-clipboard() {
     if [[ $OSTYPE == "darwin"* ]]; then
         echo "$1" | pbcopy  # for macOS
@@ -92,6 +94,7 @@ function to-clipboard() {
     fi
 }
 
+# Paste from clipboard pipe
 function from-clipboard() {
     if [[ $OSTYPE == "darwin"* ]]; then
         pbpaste  # for macOS
@@ -101,4 +104,41 @@ function from-clipboard() {
         >&2 echo "Error: Clipboard functionality not supported on this platform."
         return 1
     fi
+}
+
+# Error code to error text translater
+function get-error-text() {
+  if [[ $1 == 1 ]]; then
+    echo "General error"
+  elif [ $1 == 2 ]; then
+    echo "Missing keyword, command, or permission problem"
+  elif [ $1 == 126 ]; then
+    echo "Permission problem or command is not an executable"
+  elif [ $1 == 127 ]; then
+    echo "Command not found"
+  elif [ $1 == 128 ]; then
+    echo "Invalid argument to exit"
+  elif [ $1 == 129 ]; then
+    echo "Fatal error signal 1"
+  elif [ $1 == 130 ]; then
+    echo "Script terminated by Control-C"
+  elif [ $1 == 131 ]; then
+    echo "Fatal error signal 3"
+  elif [ $1 == 132 ]; then
+    echo "Fatal error signal 4"
+  elif [ $1 == 133 ]; then
+    echo "Fatal error signal 5"
+  elif [ $1 == 134 ]; then
+    echo "Fatal error signal 6"
+  elif [ $1 == 135 ]; then
+    echo "Fatal error signal 7"
+  elif [ $1 == 136 ]; then
+    echo "Fatal error signal 8"
+  elif [ $1 == 137 ]; then
+    echo "Fatal error signal 9"
+  elif [ $1 -gt 255 ]; then
+    echo "Exit status out of range"
+  else
+    echo "Unknown error code"
+  fi
 }
