@@ -1,0 +1,144 @@
+setopt INC_APPEND_HISTORY
+
+#######################################################
+#          Set the amazing command prompt             #
+#######################################################
+function __setprompt
+{
+  # refresh IP
+  (set_public_ip_to_extip_file &) > /dev/null 2>&1
+
+  local LAST_COMMAND=$? # Must come first!
+  local NEWLINE=$'\n'
+
+  PS1=""
+  PS2=""
+  PS3=""
+  PS4=""
+
+  # Define colors and other variables
+  local RED="%F{red}"
+  local GREEN="%F{green}"
+  local YELLOW="%F{yellow}"
+  local BLUE="%F{blue}"
+  local MAGENTA="%F{magenta}"
+  local CYAN="%F{cyan}"
+  local NOCOLOR="%b%f%F{reset}"
+  local BOLD="%B"
+
+  local PERCENTAGE="%%"
+  local HOSTNAME="%M"
+  local CWD="%~"
+  local USERNAME="%n"
+
+  # set color only when we know we can use color
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    local color_prompt=yes
+  else
+    local color_prompt=
+  fi
+
+  # unset color and style codes if we don't want colors
+  if ! [ "$color_prompt" = yes ]; then
+    local RED=""
+    local GREEN=""
+    local YELLOW=""
+    local BLUE=""
+    local MAGENTA=""
+    local CYAN=""
+    local NOCOLOR=""
+    local BOLD=""
+  fi
+
+  # Show error exit code if there is one
+  if [[ $LAST_COMMAND != 0 ]]; then
+    PS1+="${NOCOLOR}(${RED}${BOLD}ERROR${NOCOLOR})-(${RED}${BOLD}Exit Code ${NOCOLOR}${LAST_COMMAND}${NOCOLOR})-(${RED}${BOLD}"
+    if [[ $LAST_COMMAND == 1 ]]; then
+      PS1+="General error"
+    elif [ $LAST_COMMAND == 2 ]; then
+      PS1+="Missing keyword, command, or permission problem"
+    elif [ $LAST_COMMAND == 126 ]; then
+      PS1+="Permission problem or command is not an executable"
+    elif [ $LAST_COMMAND == 127 ]; then
+      PS1+="Command not found"
+    elif [ $LAST_COMMAND == 128 ]; then
+      PS1+="Invalid argument to exit"
+    elif [ $LAST_COMMAND == 129 ]; then
+      PS1+="Fatal error signal 1"
+    elif [ $LAST_COMMAND == 130 ]; then
+      PS1+="Script terminated by Control-C"
+    elif [ $LAST_COMMAND == 131 ]; then
+      PS1+="Fatal error signal 3"
+    elif [ $LAST_COMMAND == 132 ]; then
+      PS1+="Fatal error signal 4"
+    elif [ $LAST_COMMAND == 133 ]; then
+      PS1+="Fatal error signal 5"
+    elif [ $LAST_COMMAND == 134 ]; then
+      PS1+="Fatal error signal 6"
+    elif [ $LAST_COMMAND == 135 ]; then
+      PS1+="Fatal error signal 7"
+    elif [ $LAST_COMMAND == 136 ]; then
+      PS1+="Fatal error signal 8"
+    elif [ $LAST_COMMAND == 137 ]; then
+      PS1+="Fatal error signal 9"
+    elif [ $LAST_COMMAND -gt 255 ]; then
+      PS1+="Exit status out of range"
+    else
+      PS1+="Unknown error code"
+    fi
+    PS1+=")${NOCOLOR}${NEWLINE}"
+  else
+    PS1+=""
+  fi
+
+  # Date
+  PS1+="${NOCOLOR}(${CYAN}${BOLD}$(date +%a) $(date +%b-'%-m')" # Date
+  PS1+="${BLUE}${BOLD} $(date +'%-I':%M%P)${NOCOLOR})-" # Time
+
+  # CPU
+  CPU_USAGE=$(cpu)
+  if [[ "$CPU_USAGE" =~ ^[0-9]+\.*[0-9]*$ ]]; then
+    PS1+="(${MAGENTA}${BOLD}CPU ${CPU_USAGE}${PERCENTAGE}${NOCOLOR})-"
+  fi
+
+  # hostname
+  PS1+="(${YELLOW}${BOLD}${HOSTNAME}"
+
+  # Current directory
+  PS1+="${NOCOLOR}:${YELLOW}${CWD}${NOCOLOR})"
+
+  # Current Global IP
+  IP=$(publicip)
+  if [ "$IP" != "" ]; then
+    PS1+="-(${RED}${BOLD}${IP}${NOCOLOR})"
+  fi
+
+  # Skip to the next line
+  PS1+="${NEWLINE}"
+
+  if [[ $EUID -ne 0 ]]; then
+    PS1+="${NOCOLOR}(${GREEN}${BOLD}${USERNAME}${NOCOLOR}) ${YELLOW}${BOLD}$(git rev-parse --abbrev-ref HEAD 2> /dev/null)${NOCOLOR}${GREEN} >>>${NOCOLOR} " # Normal user
+  else
+    PS1+="${NOCOLOR}(${RED}${BOLD}${USERNAME}${NOCOLOR}) ${YELLOW}${BOLD}$(git rev-parse --abbrev-ref HEAD 2> /dev/null)${NOCOLOR}${RED} >>>${NOCOLOR} " # Root user
+  fi
+
+  # Add python virtual env name to prompt if available
+  if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT}" ] ; then
+    env_name=$(basename "$VIRTUAL_ENV")
+    if ! [ -z "${env_name}" ] ; then
+      PS1="[${env_name}]-${PS1}"
+    fi
+  fi
+
+  # PS2 is used to continue a command using the \ character
+  PS2+="${GREEN} >>>${NOCOLOR} "
+
+  # PS3 is used to enter a number choice in a script
+  PS3+="${GREEN} Enter a number from the list above:${NOCOLOR} "
+
+  # PS4 is used for tracing a script in debug mode
+  PS4+="${GREEN}+${NOCOLOR} "
+}
+
+PROMPT_COMMAND='__setprompt'
+precmd_functions=(__setprompt)

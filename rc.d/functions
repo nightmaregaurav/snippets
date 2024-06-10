@@ -1,0 +1,104 @@
+# function to set ext ip in a file
+function set_public_ip_to_extip_file() {
+  local addr=$( timeout 3 curl -s http://whatismyip.akamai.com/ || \
+    timeout 3 curl -s http://ifconfig.io/ip || \
+    timeout 3 curl -s http://ifconfig.me/ip || \
+    timeout 3 curl -s http://ipecho.net/plain
+  )
+  [ $? -ne 0 ] && addr="0.0.0.0"
+
+  if [[ "$addr" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+    echo $addr > ~/.extip
+  elif [[ "$addr" =~ ^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$ ]]; then
+    echo $addr > ~/.extip
+  fi
+}
+
+# Get free port after a port
+function freeportafter
+{
+  local blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
+  local port=$*;
+
+  if [[ "$port" == "$blank" ]]; then
+    port=5000;
+  fi;
+
+  portArray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
+
+  for i in "${portArray[@]}"
+  do
+    if [[ $i == $port ]]; then
+      port=$((port+1));
+    else
+      break;
+    fi;
+  done;
+
+  echo $port;
+}
+
+function recurse-run() {
+  initial_command="$*"
+  shift "$#"
+
+  master_root_dir=$(pwd)
+  trap "echo '\nExit signal received!\nGoing back to the folder we began with.'; cd $master_root_dir; return;" SIGINT SIGTERM
+
+  if [[ -n "$initial_command" ]]; then
+    echo "Executing initial command as you asked [$initial_command]"
+    eval "$initial_command"
+  fi
+
+  root_dir=$(pwd)
+
+  while true; do
+    echo "Starting recursion from directory root: $root_dir"
+    echo -n "Enter command to run in all dirs >>> "
+    read -r cmd
+    
+    if [[ -z "$cmd" ]]; then
+      echo -n "No commands found! Exiting..."
+      break
+    fi
+
+    for dir in $(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/\.*'); do
+      cd "$dir"
+      printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
+      echo ">>> [$dir]"
+      eval "$cmd"
+      cd "$root_dir"
+    done
+
+    echo ""
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '*'
+    echo "Recursion complete!!"
+    cd "$root_dir"
+  done
+}
+
+function mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+function to-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        echo "$1" | pbcopy  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        echo "$1" | xclip -selection clipboard  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
+}
+
+function from-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        pbpaste  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        xclip -selection clipboard -o  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
+}

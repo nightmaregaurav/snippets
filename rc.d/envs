@@ -1,0 +1,44 @@
+# environment setup for python virtual environment
+export WORKON_HOME="$HOME/.python_virtual_envs"
+export PROJECT_HOME="$HOME/Repositories"
+export LD_LIBRARY_PATH=/usr/local/lib
+
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  . /usr/local/bin/virtualenvwrapper.sh
+elif [ -f ~/.local/bin/virtualenvwrapper.sh ]; then
+  . ~/.local/bin/virtualenvwrapper.sh
+fi
+
+# environment setup for dotnet
+if [ -f $HOME/.dotnet/dotnet ]; then
+  export DOTNET_ROOT=$HOME/.dotnet
+elif [ -f /usr/local/share/dotnet/dotnet ]; then
+  export DOTNET_ROOT=/usr/local/share/dotnet
+elif [ -f /usr/share/dotnet/dotnet ]; then
+  export DOTNET_ROOT=/usr/share/dotnet
+fi
+
+# environment setup for node virtual machine
+[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source $NVM_DIR/nvm.sh
+[ -s "$NVM_DIR/bash_completion" ] && source $NVM_DIR/bash_completion
+[ -s "$NVM_DIR/install-nvm-exec" ] && source $NVM_DIR/install-nvm-exec
+
+# path setup
+PATH_LIST=(
+    $HOME/.local/bin
+    $HOME/bin
+    /usr/local/bin
+    /usr/bin
+    /usr/local/sbin
+    /usr/bin/site_perl
+    /usr/bin/vendor_perl
+    /usr/bin/core_perl
+    $HOME/.dotnet
+    $HOME/.dotnet/tools
+    $HOME/.config/composer/vendor/bin
+    $HOME/.local/share/JetBrains/Toolbox/scripts
+    /opt/mssql-tools/bin
+    $HOME/.flutter/bin
+)
+export PATH=$PATH:$(IFS=:; echo "${PATH_LIST[*]}")
