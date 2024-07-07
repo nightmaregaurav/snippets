@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Check if the user provided a directory path
+if [ -z "$2" ]; then
+  echo "Usage: $0 <path_to_git_repo> <filename>"
+  exit 1
+fi
+
+REPO_PATH=$1
+MAGIC_FILE=$2
+
+# Check if the provided path is a git repository
+if [ ! -d "$REPO_PATH/.git" ]; then
+  echo "The provided path is not a git repository."
+  exit 1
+fi
+
+# Cleanup function to be called on exit
+cleanup() {
+  if [ -f "$MAGIC_FILE" ]; then
+    # Remove the magic file and commit the removal
+    rm "$MAGIC_FILE"
+    git add "$MAGIC_FILE"
+    git commit -m "Magic --"
+    echo "Cleanup completed and 'Magic --' commit done."
+  fi
+}
+
+# Set trap to call cleanup on script exit
+trap cleanup EXIT
+
+# Change to the provided directory
+cd "$REPO_PATH" || exit
+
+# Create the magic file and commit it
+touch "$MAGIC_FILE"
+git add "$MAGIC_FILE"
+git commit -m "Magic ++"
+
+# Number of times to change the content and commit
+NUM_COMMITS=100000
+
+# Loop to change the content of the magic file and commit the changes
+for ((i = 0; i < NUM_COMMITS; i++)); do
+  now="$(date +%s%N)"
+  echo "$now" > "$MAGIC_FILE"
+  git add "$MAGIC_FILE"
+  git commit -m "Magic $now"
+
+  # Print the number of commits done
+  echo "Completed content change commit $(($i + 1))/$NUM_COMMITS"
+done
+
+echo "Completed spamming the git repo with $NUM_COMMITS content change commits and final removal commit."
