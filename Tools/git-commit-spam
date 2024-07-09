@@ -43,9 +43,9 @@ NUM_COMMITS=100000
 # Loop to change the content of the magic file and commit the changes
 for ((i = 0; i < NUM_COMMITS; i++)); do
   now="$(date +%s%N)"
-  echo "$now" > "$MAGIC_FILE"
+  echo "$i $now" > "$MAGIC_FILE"
   git add "$MAGIC_FILE"
-  git commit -m "Magic $now"
+  git commit -m "Magic $i $now"
 
   # Print the number of commits done
   echo "Completed content change commit $(($i + 1))/$NUM_COMMITS"
