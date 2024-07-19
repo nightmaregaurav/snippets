@@ -4,7 +4,7 @@ Type=Application
 Name=Screen Mirror (scrcpy)
 GenericName=Scrcpy
 Comment=View Android Screen On Linux
-Exec=scrcpy --video-codec=h265 --keyboard=uhid --stay-awake %u
+Exec=scrcpy --video-codec=h265 --keyboard=uhid --mouse=uhid --stay-awake %u
 Icon=phone-symbolic
 Terminal=false
 X-MultipleArgs=false
@@ -13,7 +13,7 @@ Actions=borderless;nodisplay;nodisplayborderless;view;viewborderless;
 X-KDE-SubstituteUID=false
 
 [Desktop Action borderless]
-Exec=scrcpy --video-codec=h265 --keyboard=uhid --window-borderless --stay-awake %u
+Exec=scrcpy --video-codec=h265 --keyboard=uhid --mouse=uhid --window-borderless --stay-awake %u
 Name=With borderless window
 
 [Desktop Action nodisplay]
