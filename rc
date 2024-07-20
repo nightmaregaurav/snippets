@@ -1,8 +1,8 @@
-current_script_dir=$(dirname "${BASH_SOURCE[0]}")
+current_rc_script_dir=$(dirname "${BASH_SOURCE[0]}")
 
-source $current_script_dir/rc.d/envs
-source $current_script_dir/rc.d/aliases
-source $current_script_dir/rc.d/functions
+source $current_rc_script_dir/rc.d/envs
+source $current_rc_script_dir/rc.d/aliases
+source $current_rc_script_dir/rc.d/functions
 
 # save external IP Address to a file
 rm -f ~/.extip
@@ -24,9 +24,9 @@ export HISTSIZE=2000
 export HISTFILE=~/.history
 
 if [[ $BASH_VERSION == "" ]]; then
-  source $current_script_dir/rc.d/zshrc
+  source $current_rc_script_dir/rc.d/zshrc
 elif [[ $ZSH_VERSION == "" ]]; then
-  source $current_script_dir/rc.d/bashrc
+  source $current_rc_script_dir/rc.d/bashrc
 else
-  return
+  source $current_rc_script_dir/rc.d/shrc
 fi;

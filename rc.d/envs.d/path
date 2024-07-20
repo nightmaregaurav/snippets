@@ -1,0 +1,18 @@
+# path setup
+PATH_LIST=(
+    $HOME/.local/bin
+    $HOME/bin
+    /usr/bin
+    /usr/local/bin
+    /usr/local/sbin
+    /usr/bin/site_perl
+    /usr/bin/vendor_perl
+    /usr/bin/core_perl
+    /opt/mssql-tools/bin
+    $HOME/.dotnet
+    $HOME/.dotnet/tools
+    $HOME/.config/composer/vendor/bin
+    $HOME/.local/share/JetBrains/Toolbox/scripts
+    $HOME/.flutter/bin
+)
+export PATH=$PATH:$(IFS=:; echo "${PATH_LIST[*]}")

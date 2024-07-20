@@ -1,0 +1,23 @@
+# Copy to clipboard pipe
+function to-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        echo "$1" | pbcopy  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        echo "$1" | xclip -selection clipboard  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
+}
+
+# Paste from clipboard pipe
+function from-clipboard() {
+    if [[ $OSTYPE == "darwin"* ]]; then
+        pbpaste  # for macOS
+    elif [[ $OSTYPE == "linux-gnu"* ]]; then
+        xclip -selection clipboard -o  # for Linux
+    else
+        >&2 echo "Error: Clipboard functionality not supported on this platform."
+        return 1
+    fi
+}

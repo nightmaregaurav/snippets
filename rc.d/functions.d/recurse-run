@@ -1,0 +1,39 @@
+# Recursively run a command in folders
+function recurse-run() {
+  initial_command="$*"
+  shift "$#"
+
+  master_root_dir=$(pwd)
+  trap "echo '\nExit signal received!\nGoing back to the folder we began with.'; cd $master_root_dir; return;" SIGINT SIGTERM
+
+  if [[ -n "$initial_command" ]]; then
+    echo "Executing initial command as you asked [$initial_command]"
+    eval "$initial_command"
+  fi
+
+  root_dir=$(pwd)
+
+  while true; do
+    echo "Starting recursion from directory root: $root_dir"
+    echo -n "Enter command to run in all dirs >>> "
+    read -r cmd
+    
+    if [[ -z "$cmd" ]]; then
+      echo -n "No commands found! Exiting..."
+      break
+    fi
+
+    for dir in $(find . -mindepth 1 -maxdepth 1 -type d -not -path '*/\.*'); do
+      cd "$dir"
+      printf '%*s\n' "$(tput cols)" '' | tr ' ' '_'
+      echo ">>> [$dir]"
+      eval "$cmd"
+      cd "$root_dir"
+    done
+
+    echo ""
+    printf '%*s\n' "$(tput cols)" '' | tr ' ' '*'
+    echo "Recursion complete!!"
+    cd "$root_dir"
+  done
+}

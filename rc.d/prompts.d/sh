@@ -1,0 +1,106 @@
+function __setprompt
+{
+  # Must come first!
+  local LAST_COMMAND=$?
+
+  # refresh IP
+  (set_public_ip_to_extip_file &) > /dev/null 2>&1
+
+  local NEWLINE=$'\n'
+
+  PS1=""
+  PS2=""
+  PS3=""
+  PS4=""
+
+  # Define colors and other variables
+  local RED="\[\033[0;31m\]"
+  local GREEN="\[\033[0;32m\]"
+  local YELLOW="\[\033[0;33m\]"
+  local BLUE="\[\033[0;34m\]"
+  local MAGENTA="\[\033[0;35m\]"
+  local CYAN="\[\033[0;36m\]"
+  local NOCOLOR="\[\033[0m\]"
+  local BOLD="\[\033[1m\]"
+
+  local PERCENTAGE="%"
+  local HOSTNAME="\h"
+  local CWD="\w"
+  local USERNAME="\u"
+
+  # set color only when we know we can use color
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    local color_prompt=yes
+  else
+    local color_prompt=
+  fi
+
+  # unset color and style codes if we don't want colors
+  if ! [ "$color_prompt" = yes ]; then
+    local RED=""
+    local GREEN=""
+    local YELLOW=""
+    local BLUE=""
+    local MAGENTA=""
+    local CYAN=""
+    local NOCOLOR=""
+    local BOLD=""
+  fi
+
+  # Show error exit code if there is one
+  if [[ $LAST_COMMAND != 0 ]]; then
+    local error_text=$(get-error-text $LAST_COMMAND)
+    PS1+="${NOCOLOR}(${RED}${BOLD}ERROR${NOCOLOR})-(${YELLOW}${BOLD}Exit Code ${RED}${LAST_COMMAND}${NOCOLOR})-(${RED}${BOLD}${error_text}${NOCOLOR})${NEWLINE}"
+  fi
+
+  # Date
+  PS1+="${NOCOLOR}(${CYAN}${BOLD}$(date +%a) $(date +%b-'%-m')" # Date
+  PS1+="${BLUE}${BOLD} $(date +'%-I':%M%P)${NOCOLOR})-" # Time
+
+  # CPU
+  CPU_USAGE=$(cpu)
+  if [[ "$CPU_USAGE" =~ ^[0-9]+\.*[0-9]*$ ]]; then
+    PS1+="(${MAGENTA}${BOLD}CPU ${CPU_USAGE}${PERCENTAGE}${NOCOLOR})-"
+  fi
+
+  # hostname
+  PS1+="(${YELLOW}${BOLD}${HOSTNAME}"
+
+  # Current directory
+  PS1+="${NOCOLOR}:${YELLOW}${CWD}${NOCOLOR})"
+
+  # Current Global IP
+  IP=$(publicip)
+  if [ "$IP" != "" ]; then
+    PS1+="-(${RED}${BOLD}${IP}${NOCOLOR})"
+  fi
+
+  # Skip to the next line
+  PS1+="${NEWLINE}"
+
+  if [[ $EUID -ne 0 ]]; then
+    PS1+="${NOCOLOR}(${GREEN}${BOLD}${USERNAME}${NOCOLOR}) ${YELLOW}${BOLD}$(git rev-parse --abbrev-ref HEAD 2> /dev/null)${NOCOLOR}${GREEN} >>>${NOCOLOR} " # Normal user
+  else
+    PS1+="${NOCOLOR}(${RED}${BOLD}${USERNAME}${NOCOLOR}) ${YELLOW}${BOLD}$(git rev-parse --abbrev-ref HEAD 2> /dev/null)${NOCOLOR}${RED} >>>${NOCOLOR} " # Root user
+  fi
+
+  # Add python virtual env name to prompt if available
+  if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT}" ] ; then
+    env_name=$(basename "$VIRTUAL_ENV")
+    if ! [ -z "${env_name}" ] ; then
+      PS1="[${env_name}]-${PS1}"
+    fi
+  fi
+
+  # PS2 is used to continue a command using the \ character
+  PS2+="${GREEN} >>>${NOCOLOR} "
+
+  # PS3 is used to enter a number choice in a script
+  PS3+="${GREEN} Enter a number from the list above:${NOCOLOR} "
+
+  # PS4 is used for tracing a script in debug mode
+  PS4+="${GREEN}+${NOCOLOR} "
+}
+
+PROMPT_COMMAND='__setprompt'
+precmd_functions=(__setprompt)

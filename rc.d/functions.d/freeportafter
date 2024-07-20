@@ -1,0 +1,22 @@
+# Get free port after a port
+function freeportafter() {
+  local blank=$(echo " " | tr -d ' ' | tr -d '  ' | tr -d '\n');
+  local port=$*;
+
+  if [[ "$port" == "$blank" ]]; then
+    port=5000;
+  fi;
+
+  portArray=($(lsof -i -P -n | grep LISTEN | awk '{print $9}' | awk -F: '{print $NF}' | awk '$1 >= '"$port"' {print $1}' | sort -un));
+
+  for i in "${portArray[@]}"
+  do
+    if [[ $i == $port ]]; then
+      port=$((port+1));
+    else
+      break;
+    fi;
+  done;
+
+  echo $port;
+}
