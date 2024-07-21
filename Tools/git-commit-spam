@@ -24,12 +24,17 @@ cd "$REPO_PATH" || exit
 # Half of the commits will be the loop iteration number
 NUMBER_OF_LOOP_ITERATIONS=$((NUMBER_OF_COMMITS / 2))
 
+
 # Loop to change the content of the magic file and commit the changes
 for ((i = 0; i < NUMBER_OF_COMMITS; i++)); do
   file_name="$MAGIC_FILE_NAME_PREFIX-$i"
   echo "$i" > "$file_name"
   git add $file_name && git commit -m 'Magic ++' && rm $file_name && git add $file_name && git commit -m 'Magic --';
   echo "Completed $((i + 1)) of $NUMBER_OF_LOOP_ITERATIONS loops."
+  if [ $((i % 1000)) -eq 0 ]; then
+    echo "Pushing to remote as git does not allow more than 1000 commits in a single push."
+    git push
+  fi
 done
 
 echo "Completed spamming the git repo with $NUMBER_OF_COMMITS content change commits and final removal commit."
