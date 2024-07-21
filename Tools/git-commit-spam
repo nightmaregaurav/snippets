@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Number of commits to be done
-NUMBER_OF_COMMITS=100000
+NUMBER_OF_COMMITS=100000000
 
 # Check if the user provided a directory path
 if [ -z "$2" ]; then
@@ -28,11 +28,7 @@ NUMBER_OF_LOOP_ITERATIONS=$((NUMBER_OF_COMMITS / 2))
 for ((i = 0; i < NUMBER_OF_COMMITS; i++)); do
   file_name="$MAGIC_FILE_NAME_PREFIX-$i"
   echo "$i" > "$file_name"
-  git add "$file_name"
-  git commit -m "Magic + $i $now"
-  rm "$file_name"
-  git add "$file_name"
-  git commit -m "Magic - $i $now"
+  git add $file_name && git commit -m 'Magic ++' && rm $file_name && git add $file_name && git commit -m 'Magic --';
   echo "Completed $((i + 1)) of $NUMBER_OF_LOOP_ITERATIONS loops."
 done
 
