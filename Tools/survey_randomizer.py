@@ -1,6 +1,8 @@
 import json
 import random
 
+TOTAL_ENTRIES_TO_GENERATE = 250
+
 data = {    
     "How frequently do you use public transportation in Kathmandu Valley?": [
         ("Daily", 5),
@@ -117,7 +119,7 @@ def generate_answer(options):
 
 questions = list(data.keys())
 answers = []
-for _ in range(250):
+for _ in range(TOTAL_ENTRIES_TO_GENERATE):
     answers.append([generate_answer(options) for _, options in data.items()])
 
 final = {
