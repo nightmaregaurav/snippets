@@ -1,0 +1,8 @@
+# environment setup for java
+if [ -f /usr/java/default/bin/java ]; then
+  export JAVA_HOME=/usr/java/default
+  export JDK_HOME=/usr/java/default
+elif [ -f /usr/lib/jvm/java/bin/java ]; then
+  export JAVA_HOME=/usr/lib/jvm/java
+  export JDK_HOME=/usr/lib/jvm/java
+fi
