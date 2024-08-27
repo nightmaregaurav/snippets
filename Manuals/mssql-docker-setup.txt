@@ -54,7 +54,7 @@ services:
         target: "/var/opt/mssql"
 
 
->>> docker-compose up -d
+>>> COMPOSE_PROJECT_NAME="local" docker-compose up -d --no-cache
 
 
 ############### Service File ############### sudo nano /etc/systemd/system/ms-sql-docker.service
