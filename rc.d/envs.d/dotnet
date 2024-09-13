@@ -1,8 +1,0 @@
-# environment setup for dotnet
-if [ -f $HOME/.dotnet/dotnet ]; then
-  export DOTNET_ROOT=$HOME/.dotnet
-elif [ -f /usr/local/share/dotnet/dotnet ]; then
-  export DOTNET_ROOT=/usr/local/share/dotnet
-elif [ -f /usr/share/dotnet/dotnet ]; then
-  export DOTNET_ROOT=/usr/share/dotnet
-fi

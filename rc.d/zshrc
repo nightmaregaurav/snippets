@@ -1,2 +1,0 @@
-setopt INC_APPEND_HISTORY
-source $current_rc_script_dir/rc.d/prompts.d/zsh
