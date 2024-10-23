@@ -1,41 +1,41 @@
 MyAspNetApp (Solution)
 |
-+---> Web/Api (ASP.NET Web and/or API)
++---> MyAspNetApp.Api (ASP.NET Web and/or API)
 |   |
-|   +---> Business (To call IServices & acknowledge DIs)
+|   +---> MyAspNetApp.Business (To call IServices & acknowledge DIs)
 |   |
-|   +---> Data (To acknowledge DIs)
+|   +---> MyAspNetApp.Data (To acknowledge DIs)
 |   |
-|   +---> Shared (To access shared helpers)
+|   +---> MyAspNetApp.Shared (To access shared helpers)
 |	|
-|	+---> Api.Models (To access api/view models)
+|	+---> MyAspNetApp.Api.Models (To access api/view models)
 |
-+---> Business (Service/Business Logic Layer)
++---> MyAspNetApp.Business (Service/Business Logic Layer)
 |   |
-|   +---> Business.Abstraction (To implement Interfaces & setup DI)
+|   +---> MyAspNetApp.Business.Abstraction (To implement Interfaces & setup DI)
 |   |
-|   +---> Data.Abstraction (To call IRepositories)
+|   +---> MyAspNetApp.Data.Abstraction (To call IRepositories)
 |   |
-|   +---> Shared (To access shared helpers)
+|   +---> MyAspNetApp.Shared (To access shared helpers)
 |
-+---> Data (Repository/Data access Layer)
++---> MyAspNetApp.Data (Repository/Data access Layer)
 |   |
-|   +---> Data.Abstraction (To implement Interfaces & setup DI)
+|   +---> MyAspNetApp.Data.Abstraction (To implement Interfaces & setup DI)
 |   |
-|   +---> Shared (To access shared helpers)
+|   +---> MyAspNetApp.Shared (To access shared helpers)
 |
-+---> Business.Abstraction (Service/Business Logic Interfaces)
++---> MyAspNetApp.Business.Abstraction (Service/Business Logic Interfaces)
 |   |
-|   +---> Business.Models (To define return type as DTOs in IService methods)
+|   +---> MyAspNetApp.Business.Models (To define return type as DTOs in IService methods)
 |
-+---> Data.Abstraction (Repository/Data access Interfaces)
++---> MyAspNetApp.Data.Abstraction (Repository/Data access Interfaces)
 |   |
-|   +---> Data.Models (To define return type as Entities in IRepository methods)
+|   +---> MyAspNetApp.Data.Models (To define return type as Entities in IRepository methods)
 |
-+---> Api.Models (API/View Models)
++---> MyAspNetApp.Api.Models (API/View Models)
 |
-+---> Business.Models (DTOs)
++---> MyAspNetApp.Business.Models (DTOs)
 |
-+---> Data.Models (Entities and Custom Data Types)
++---> MyAspNetApp.Data.Models (Entities and Custom Data Types)
 |
-+---> Shared (Common Helpers)
++---> MyAspNetApp.Shared (Common Helpers)
