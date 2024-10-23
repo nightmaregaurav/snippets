@@ -8,7 +8,7 @@ MyAspNetApp (Solution)
 |   |
 |   +---> Shared (To access shared helpers)
 |	|
-|	+---> Models (To access api/view models)
+|	+---> Api.Models (To access api/view models)
 |
 +---> Business (Service/Business Logic Layer)
 |   |
@@ -32,7 +32,7 @@ MyAspNetApp (Solution)
 |   |
 |   +---> Data.Models (To define return type as Entities in IRepository methods)
 |
-+---> Models (API/View Models)
++---> Api.Models (API/View Models)
 |
 +---> Business.Models (DTOs)
 |
