@@ -1,4 +1,4 @@
 npx http-server $(pwd) -a localhost --port 4200 --proxy http://localhost:4200? -d false --log-ip --gzip --brotli
 
-# change -d false to -d true to allow directory listening
+# remove -d false to allow directory listings
 # proxy is used if request could not be fulfilled
