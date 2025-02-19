@@ -5,7 +5,7 @@
         ```
     - RHEL
         ``` bash
-            sudo dnf install mariadb mariadb-clients
+            sudo dnf install mariadb mariadb-server
         ```
     - Debian
         ``` bash
