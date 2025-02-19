@@ -66,59 +66,18 @@ sudo systemctl start httpd.service
 ```
 
 # Install phpMyAdmin
+- Arch
 ``` bash
 sudo pacman -S phpmyadmin
 ```
-
-# Configure phpMyAdmin
+- RHEL
 ``` bash
-sudo nano /etc/httpd/conf/extra/phpmyadmin.conf
+sudo dnf install phpmyadmin
 ```
-# Add these lines:
-    Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"
-    <Directory "/usr/share/webapps/phpMyAdmin">
-        DirectoryIndex index.php
-        AllowOverride All
-        Options FollowSymlinks
-        Require all granted
-    </Directory>
-    
-# Configure Permission
+- Debian
 ``` bash
-sudo chmod 644 /etc/httpd/conf/extra/phpmyadmin.conf
+sudo apt install phpmyadmin
 ```
-
-# Add the phpMyAdmin configuration to httpd.conf
-``` bash
-sudo nano /etc/httpd/conf/httpd.conf
-```
-# Add this line at the end:
-    Include conf/extra/phpmyadmin.conf
-
-# Create a temporary directory for phpMyAdmin
-``` bash
-sudo mkdir -p /var/lib/phpmyadmin/tmp
-sudo chown -R http:http /var/lib/phpmyadmin/tmp
-```
-
-# Configure phpMyAdmin to use the temporary directory and a blowfish secret
-``` bash
-sudo mkdir /etc/phpmyadmin
-sudo cp /usr/share/webapps/phpMyAdmin/config.sample.inc.php /usr/share/webapps/phpMyAdmin/config.inc.php
-sudo nano /usr/share/webapps/phpMyAdmin/config.inc.php
-```
-# Update these lines:
-    $cfg['TempDir'] = '/var/lib/phpmyadmin/tmp';
-    $cfg['blowfish_secret'] = 'replace with 32bit randomstrings';
-
-# Enable the required PHP extensions
-``` bash
-sudo nano /etc/php/php.ini
-```
-# Uncomment these lines:
-    extension=mysqli
-    extension=curl
-    extension=iconv
 
 # Restart the Apache service
 ``` bash
