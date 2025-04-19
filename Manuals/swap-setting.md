@@ -14,5 +14,6 @@ sudo lsattr /swapfile  # make sure you see the letter C in the results: --------
 sudo mkswap /swapfile  # Setting up swapspace version 1, size = 48 GiB...
 sudo swapon /swapfile
 sudo nano /etc/fstab  # - Write: `/swapfile swap swap defaults 0 0`
+sudo swapoff /dev/zram0
 sudo swapon -s
 ```
