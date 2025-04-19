@@ -27,6 +27,7 @@ dotnet dev-certs https --clean
 Then, generate a new development certificate:
 
 ```bash
+sudo mkdir -p /usr/local/share/ca-certificates/aspnet/
 dotnet dev-certs https
 sudo dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
 ```
