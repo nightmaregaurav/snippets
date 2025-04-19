@@ -48,6 +48,7 @@ To configure Firefox to trust the new certificate, run the following command:
 ```bash
 firefox_lib_folder=/usr/lib/firefox
 sudo mkdir -p $firefox_lib_folder
+sudo touch $firefox_lib_folder/distribution/policies.json
 cat <<EOF | sudo tee $firefox_lib_folder/distribution/policies.json
 {
     "policies": {
