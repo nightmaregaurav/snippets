@@ -3,3 +3,4 @@ nano .ssh/config
 Host <alias>
     Hostname <IP/domain>
     User "<Username>"
+    IdentityFile ~/.ssh/private_key
