@@ -1,0 +1,5 @@
+curl https://www.nirsoft.net/utils/nircmd.zip -o nircmd.zip
+mkdir .nircmd
+tar -xf nircmd.zip -C .nircmd
+del nircmd.zip
+setx /M PATH "%PATH%;C:\Users\<USERNAME>\.nircmd"
