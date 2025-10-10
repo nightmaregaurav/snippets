@@ -1,0 +1,13 @@
+curl https://www.nirsoft.net/utils/nircmd.zip -o nircmd.zip
+mkdir .nircmd
+tar -xf nircmd.zip -C .nircmd
+del nircmd.zip
+powershell -Command "$p=[Environment]::GetEnvironmentVariable('Path','Machine') + ';C:\Users\<USERNAME>\.nircmd'; [Environment]::SetEnvironmentVariable('Path',$p,'Machine')"
+
+curl https://download.sysinternals.com/files/SysinternalsSuite.zip -o SysinternalsSuite.zip
+mkdir .SysinternalsSuite
+tar -xf SysinternalsSuite.zip -C .SysinternalsSuite
+del SysinternalsSuite.zip
+powershell -Command "$p=[Environment]::GetEnvironmentVariable('Path','Machine') + ';C:\Users\<USERNAME>\.SysinternalsSuite'; [Environment]::SetEnvironmentVariable('Path',$p,'Machine')"
+cd .SysinternalsSuite
+psexec -accepteula
