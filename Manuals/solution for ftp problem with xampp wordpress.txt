@@ -1,2 +1,0 @@
-/** The Upload type */
-define( 'FS_METHOD', 'direct' );
