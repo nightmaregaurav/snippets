@@ -2,5 +2,10 @@ nano .ssh/config
 
 Host <alias>
     Hostname <IP/domain>
+    Port 22
     User "<Username>"
     IdentityFile ~/.ssh/private_key
+    IdentitiesOnly yes
+    ForwardAgent yes
+    ForwardX11 yes
+    ForwardX11Trusted yes
