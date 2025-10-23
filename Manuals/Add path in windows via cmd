@@ -1,1 +1,5 @@
-powershell -Command "$p=[Environment]::GetEnvironmentVariable('Path','Machine') + ';C:\path\to\bin'; [Environment]::SetEnvironmentVariable('Path',$p,'Machine')"
+[System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+[System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
+
+[System.Environment]::SetEnvironmentVariable('Path', "<FULL_PATH_HERE>", [System.EnvironmentVariableTarget]::User)
+[System.Environment]::SetEnvironmentVariable('Path', "<FULL_PATH_HERE>", [System.EnvironmentVariableTarget]::Machine)
